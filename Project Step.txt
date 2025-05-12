@@ -1,0 +1,14 @@
+-> npm create vite@latest
+-> Project name // folder name
+-> dependancy  // npm install
+->npm install axios react-dom react-toastify
+->npm run dev // run the Project
+-> npm install -D tailwindcss postcss autoprefixer // tailwind Dependancy install
+-> npm i express mongoose multer bcrypt cloudinary cors dotenv jsonwebtoken nodemon validator 
+ all the package required in  for server.
+ 
+
+tensorflowjs_converter --input_format keras VericoseVeins.h5 tfjs_model/
+
+
+15:18 
