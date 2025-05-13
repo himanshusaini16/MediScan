@@ -95,8 +95,9 @@ async function heartdisease_model_load(){
 async function eyedisease_Model_load() {
     try {
         modelEyedisease = await tf.loadLayersModel(eyedisease_model_url);
-    //    console.log("Eye Model loaded!");
+       console.log("Eye Model loaded!");
     } catch (error) {
+        console.log(error)
     }
 }
 
