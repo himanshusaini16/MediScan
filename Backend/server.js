@@ -42,31 +42,31 @@ connectCloudinary()
 app.use(express.json())
 app.use(cors())
 
-app.use('/Vericose/tfjs_model',express.static(path.join(__dirname,"vericose","tfjs_model")))
-const Vericose_model_url = "https://mediscan-6ikc.onrender.com/vericose/tfjs_model/model.json";
+app.use('/Vericose/tfjs_model',express.static(path.join(__dirname,"Vericose","tfjs_model")))
+const Vericose_model_url = "https://mediscan-6ikc.onrender.com/Vericose/tfjs_model/model.json";
 
 let vericoseModel = null;
 async function VeriCose_Model_load() {
     try {
         vericoseModel = await tf.loadLayersModel(Vericose_model_url);
-    //    console.log("Vericose Model Loded!");
+       console.log("Vericose Model Loded!");
     } catch (error) {
     }
 }
 VeriCose_Model_load()
 
-app.use('/Disease/Diabetes/tfjs_model',express.static(path.join(__dirname,"disease","diabetes","tfjs_model")))
-const Diabetes_model_url = "https://mediscan-6ikc.onrender.com/disease/diabetes/tfjs_model/model.json";
+app.use('/Disease/Diabetes/tfjs_model',express.static(path.join(__dirname,"Disease","Diabetes","tfjs_model")))
+const Diabetes_model_url = "https://mediscan-6ikc.onrender.com/Disease/Diabetes/tfjs_model/model.json";
 
-app.use('/Disease/heartdisease/tfjs_model',express.static(path.join(__dirname,"disease","heartdisease","tfjs_model")))
-const heartdisease_model_url = "https://mediscan-6ikc.onrender.com/disease/heartdisease/tfjs_model/model.json";
+app.use('/Disease/heartdisease/tfjs_model',express.static(path.join(__dirname,"Disease","heartdisease","tfjs_model")))
+const heartdisease_model_url = "https://mediscan-6ikc.onrender.com/Disease/heartdisease/tfjs_model/model.json";
 
 app.use('/Disease/EyeDisease/tfjs_model',express.static(path.join(__dirname,"Disease","EyeDisease","tfjs_model")))
 const eyedisease_model_url = "https://mediscan-6ikc.onrender.com/Disease/EyeDisease/tfjs_model/model.json";
 
 
-app.use('/Disease/SkinCancer/tfjs_model',express.static(path.join(__dirname,"disease","skincancer","tfjs_model")))
-const skincancer_model_url = "https://mediscan-6ikc.onrender.com/disease/skincancer/tfjs_model/model.json";
+app.use('/Disease/SkinCancer/tfjs_model',express.static(path.join(__dirname,"Disease","SkinCancer","tfjs_model")))
+const skincancer_model_url = "https://mediscan-6ikc.onrender.com/Disease/SkinCancer/tfjs_model/model.json";
 
 console.log(path.join(__dirname, "Disease", "EyeDisease", "tfjs_model"));
 
@@ -78,7 +78,7 @@ let modelSkincancer = null
 async function diabetes_Model_load() {
     try {
         modelDiabetes = await tf.loadLayersModel(Diabetes_model_url);
-    //    console.log("Diabetes Model loaded!");
+       console.log("Diabetes Model loaded!");
     } catch (error) {
     }
 }
@@ -87,7 +87,7 @@ async function diabetes_Model_load() {
 async function heartdisease_model_load(){
     try {
         modelHeartdisease = await tf.loadLayersModel(heartdisease_model_url);
-    //    console.log("Heart Disease Model loaded!");
+       console.log("Heart Disease Model loaded!");
     } catch (error) {
         
     }
@@ -105,7 +105,7 @@ async function eyedisease_Model_load() {
 async function skincancer_Model_load() {
     try {
         modelSkincancer = await tf.loadLayersModel(skincancer_model_url);
-    //    console.log("skincancer Model loaded!");
+       console.log("skincancer Model loaded!");
     } catch (error) {
     }
 }
