@@ -95,6 +95,8 @@ router.post(
       const senderId = docId;
       const senderRole = "doctor";
 
+      console.log(userId,docId)
+
       let imageUrl = null;
       if (req.file) {
         try {

@@ -125,6 +125,9 @@ const DoctorContextProvider = (props) => {
       const docId = profileData._id;
       const room = `${userId}_${docId}`;
 
+      console.log('docid',docId)
+      console.log('room',room)
+
       const formData = new FormData();
       formData.append("room", room);
       formData.append("text", message.text || "");
@@ -149,6 +152,7 @@ const DoctorContextProvider = (props) => {
 
       if (data.success) {
         socket?.emit("send-message", { room, message: data.data });
+        console.log(data)
         return data.data;
       } else {
         toast.error(data.message);
@@ -166,6 +170,7 @@ const DoctorContextProvider = (props) => {
           headers: { dToken },
         }
       );
+      console.log(data)
       return data.success ? data.messages : [];
     } catch (err) {
       toast.error(err.message);
