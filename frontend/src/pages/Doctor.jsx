@@ -31,11 +31,14 @@ const Doctor = () => {
 
  
 
+  
+ 
   useEffect(() => {
     loadUserProfileData();
     loadAppointments();
     setuserId(userData._id);
   }, [token]);
+
 
 
 
