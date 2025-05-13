@@ -119,6 +119,8 @@ router.post(
 
       const room = `${userId}_${docId}`;
 
+      console.log('room from senddoctorroute',room)
+
       const validationError = validateMessage({ text, imageUrl, type });
       if (validationError) {
         return res
