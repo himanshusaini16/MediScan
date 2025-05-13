@@ -68,6 +68,7 @@ const eyedisease_model_url = "https://mediscan-6ikc.onrender.com/Disease/EyeDise
 app.use('/Disease/SkinCancer/tfjs_model',express.static(path.join(__dirname,"disease","skincancer","tfjs_model")))
 const skincancer_model_url = "https://mediscan-6ikc.onrender.com/disease/skincancer/tfjs_model/model.json";
 
+console.log(path.join(__dirname, "Disease", "EyeDisease", "tfjs_model"));
 
 let modelDiabetes =null
 let modelHeartdisease = null
