@@ -119,7 +119,15 @@ router.post(
           .json({ success: false, message: "userId and docId are required." });
       }
 
-      const room = userId
+      const parts = userId.split("_");
+let user = parts[0];
+let doc = parts[1];
+
+console.log(user)
+console.log(doc)
+
+// Ensure correct order: userId first, then docId
+const room = `${user}_${doc}`;
 
       console.log('room from senddoctorroute',room)
 
