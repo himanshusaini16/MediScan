@@ -182,6 +182,15 @@ router.get("/getMessages/:room", allowUserOrDoctor, async (req, res) => {
 router.get("/getMessagesByDoctor/:room", authDoctor, async (req, res) => {
   try {
     const { room } = req.params;
+          const parts = room.split("_");
+let doc = parts[0];
+let user = parts[1];
+
+console.log(user)
+console.log(doc)
+
+// Ensure correct order: userId first, then docId
+room = `${user}_${doc}`;
     console.log("Request Body",req.params)
     console.log("body",req.body)
 
