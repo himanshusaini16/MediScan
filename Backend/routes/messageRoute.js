@@ -54,7 +54,7 @@ router.post(
       }
 
       const roomId = room;
-      // console.log(roomId);
+      console.log(roomId);
 
       const validationError = validateMessage({ text, imageUrl, type });
       if (validationError) {
@@ -136,14 +136,14 @@ router.post(
         timestamp: new Date(),
       });
 
-      // console.log('New message created:', newMessage);
+      console.log('New message created:', newMessage);
 
       await newMessage.save();
       res
         .status(200)
         .json({ success: true, message: "Message sent", data: newMessage });
     } catch (error) {
-      // console.error('Error in sendDoctorMessage:', error);
+      console.error('Error in sendDoctorMessage:', error);
       res
         .status(500)
         .json({ success: false, message: "Internal server error" });
@@ -156,13 +156,13 @@ router.get("/getMessages/:room", allowUserOrDoctor, async (req, res) => {
     const { room } = req.params;
     const { userId } = req.body;
 
-    // console.log(userId,room)
+    console.log(userId,room)
 
     const messages = await messageModel.find({ room }).sort({ createdAt: 1 });
-    // console.log(messages)
+    console.log(messages)
     res.status(200).json({ success: true, messages });
   } catch (error) {
-    // console.error(error);
+    console.error(error);
     res.status(500).json({ success: false, message: error.message });
   }
 });
@@ -170,7 +170,8 @@ router.get("/getMessages/:room", allowUserOrDoctor, async (req, res) => {
 router.get("/getMessagesByDoctor/:room", authDoctor, async (req, res) => {
   try {
     const { room } = req.params;
-    // console.log("Request Body",req.params)
+    console.log("Request Body",req.params)
+    console.log("body",req.body)
 
     const messages = await messageModel.find({ room }).sort({ createdAt: 1 });
     res.status(200).json({ success: true, messages });
