@@ -95,7 +95,7 @@ router.post(
       const senderId = docId;
       const senderRole = "doctor";
 
-      console.log(userId,docId)
+      console.log(userId)
 
       let imageUrl = null;
       if (req.file) {
@@ -119,7 +119,7 @@ router.post(
           .json({ success: false, message: "userId and docId are required." });
       }
 
-      const room = `${userId}_${docId}`;
+      const room = userId
 
       console.log('room from senddoctorroute',room)
 
