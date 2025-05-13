@@ -123,6 +123,7 @@ const DoctorContextProvider = (props) => {
       }
 
       const docId = profileData._id;
+      console.log(userId)
       const room = `${userId}_${docId}`;
 
       console.log('docid',docId)
@@ -164,6 +165,7 @@ const DoctorContextProvider = (props) => {
 
   const getRoomMessages = async (room) => {
     try {
+      console.log("room from get message",room)
       const { data } = await axios.get(
         `${backendUrl}/api/chat/getMessagesByDoctor/${room}`,
         {

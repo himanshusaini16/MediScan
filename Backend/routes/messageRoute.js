@@ -120,10 +120,10 @@ router.post(
       }
 
       const parts = userId.split("_");
-let user = parts[0];
-let doc = parts[1];
+let doc = parts[0];
+let user = parts[1];
 
-console.log(user)
+console.log(us)
 console.log(doc)
 
 // Ensure correct order: userId first, then docId
