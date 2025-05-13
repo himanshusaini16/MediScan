@@ -43,7 +43,7 @@ app.use(express.json())
 app.use(cors())
 
 app.use('/Vericose/tfjs_model',express.static(path.join(__dirname,"vericose","tfjs_model")))
-const Vericose_model_url = "http://localhost:4000/vericose/tfjs_model/model.json";
+const Vericose_model_url = "https://mediscan-6ikc.onrender.com/vericose/tfjs_model/model.json";
 
 let vericoseModel = null;
 async function VeriCose_Model_load() {
@@ -56,17 +56,17 @@ async function VeriCose_Model_load() {
 VeriCose_Model_load()
 
 app.use('/Disease/Diabetes/tfjs_model',express.static(path.join(__dirname,"disease","diabetes","tfjs_model")))
-const Diabetes_model_url = "http://localhost:4000/disease/diabetes/tfjs_model/model.json";
+const Diabetes_model_url = "https://mediscan-6ikc.onrender.com/disease/diabetes/tfjs_model/model.json";
 
 app.use('/Disease/heartdisease/tfjs_model',express.static(path.join(__dirname,"disease","heartdisease","tfjs_model")))
-const heartdisease_model_url = "http://localhost:4000/disease/heartdisease/tfjs_model/model.json";
+const heartdisease_model_url = "https://mediscan-6ikc.onrender.com/disease/heartdisease/tfjs_model/model.json";
 
 app.use('/Disease/EyeDisease/tfjs_model',express.static(path.join(__dirname,"disease","eyedisease","tfjs_model")))
-const eyedisease_model_url = "http://localhost:4000/disease/eyedisease/tfjs_model/model.json";
+const eyedisease_model_url = "https://mediscan-6ikc.onrender.com/disease/eyedisease/tfjs_model/model.json";
 
 
 app.use('/Disease/SkinCancer/tfjs_model',express.static(path.join(__dirname,"disease","skincancer","tfjs_model")))
-const skincancer_model_url = "http://localhost:4000/disease/skincancer/tfjs_model/model.json";
+const skincancer_model_url = "https://mediscan-6ikc.onrender.com/disease/skincancer/tfjs_model/model.json";
 
 
 let modelDiabetes =null
