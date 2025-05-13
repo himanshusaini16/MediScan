@@ -26,7 +26,7 @@ const port = process.env.PORT || 4000
 const server = http.createServer(app)
 const io = new Server(server, {
     cors: {
-      origin: "https://medi-scan-mrwk.vercel.app/", 
+      origin: "*", 
       methods: ["GET", "POST"],
       credentials: true,
     },
