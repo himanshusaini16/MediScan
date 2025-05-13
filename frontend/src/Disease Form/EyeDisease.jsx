@@ -17,6 +17,8 @@ const EyeDisease = () => {
 
   const navigate = useNavigate();
 
+  console.log(userData,backendUrl,doctors)
+
   const handleFileChange = (e) => {
     e.preventDefault();
     setSelectedFile(e.target.files[0]);
@@ -52,6 +54,7 @@ const EyeDisease = () => {
       );
 
       if (data.success) {
+        console.log(data)
         toast.success(data.message);
         setPredictionResult(data.success);
 
