@@ -8,6 +8,6 @@ const connectDB =async () =>{
         console.log("Database Connected")
     })
 await mongoose.connect(`${process.env.MONGODB_URL}/mediscan`)
-await mongoose.connect(mongourl)
+// await mongoose.connect(mongourl)
 }
 export default connectDB
