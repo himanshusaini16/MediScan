@@ -61,8 +61,8 @@ const Diabetes_model_url = "https://mediscan-6ikc.onrender.com/disease/diabetes/
 app.use('/Disease/heartdisease/tfjs_model',express.static(path.join(__dirname,"disease","heartdisease","tfjs_model")))
 const heartdisease_model_url = "https://mediscan-6ikc.onrender.com/disease/heartdisease/tfjs_model/model.json";
 
-app.use('/disease/eyedisease/tfjs_model',express.static(path.join(__dirname,"disease","eyedisease","tfjs_model")))
-const eyedisease_model_url = "https://mediscan-6ikc.onrender.com/disease/eyedisease/tfjs_model/model.json";
+app.use('/Disease/EyeDisease/tfjs_model',express.static(path.join(__dirname,"Disease","EyeDisease","tfjs_model")))
+const eyedisease_model_url = "https://mediscan-6ikc.onrender.com/Disease/EyeDisease/tfjs_model/model.json";
 
 
 app.use('/Disease/SkinCancer/tfjs_model',express.static(path.join(__dirname,"disease","skincancer","tfjs_model")))
