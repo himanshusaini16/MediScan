@@ -124,7 +124,7 @@ const DoctorContextProvider = (props) => {
 
       const docId = profileData._id;
       console.log(userId)
-      const room = `${userId}_${docId}`;
+      const room = userId
 
       console.log('docid',docId)
       console.log('room',room)

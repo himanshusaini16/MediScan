@@ -123,7 +123,7 @@ router.post(
 let doc = parts[0];
 let user = parts[1];
 
-console.log(us)
+console.log(user)
 console.log(doc)
 
 // Ensure correct order: userId first, then docId
