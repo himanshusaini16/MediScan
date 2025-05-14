@@ -191,7 +191,7 @@ router.get("/getMessagesByDoctor/:room", authDoctor, async (req, res) => {
 console.log("Original Room:", room);
 console.log("Reversed Room:", reversedRoom);
 
-    const messages = await messageModel.find({ room }).sort({ createdAt: 1 });
+    const messages = await messageModel.find({ room:reversedRoom }).sort({ createdAt: 1 });
     res.status(200).json({ success: true, messages });
   } catch (error) {
     console.error(error);
