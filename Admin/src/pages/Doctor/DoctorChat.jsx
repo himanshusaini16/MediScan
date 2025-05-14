@@ -61,7 +61,7 @@ const DoctorChatPage = () => {
 
     fetchMessages();
 
-    const interval=setTimeout(fetchMessages,3000)
+    const interval = setTimeout(fetchMessages,3000)
     
 
     socket.off("receiveMessage"); // Add this line before setting new listener
