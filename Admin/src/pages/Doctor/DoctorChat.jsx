@@ -269,7 +269,9 @@ const DoctorChatPage = () => {
         >
           <option value="">-- Choose a patient --</option>
           {uniqueuser.slice().reverse().map((item, index) => {
-            const roomToken = createRoomToken(profileData._id, item.userId);
+            const reverseRoom = createRoomToken(item.userId,profileData._id);
+      const roomToken= reverseRoom.split("_").reverse().join("_");
+      console.log("room mobile token",roomToken)
             return (
               <option key={index} value={roomToken}>
                 {item.userData?.name}
@@ -283,7 +285,9 @@ const DoctorChatPage = () => {
       <div className="hidden sm:block border-r pr-2 w-full sm:w-1/4 overflow-y-auto">
         <h2 className="text-xl font-bold mb-4 pl-2">Patients</h2>
         {uniqueuser.slice().reverse().map((item, index) => {
-          const roomToken = createRoomToken(profileData._id, item.userId);
+          const reverseRoom = createRoomToken(item.userId,profileData._id);
+      const roomToken= reverseRoom.split("_").reverse().join("_");
+      console.log("room token",roomToken)
           return (
             <div
               key={index}
