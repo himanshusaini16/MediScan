@@ -50,6 +50,8 @@ const DoctorChatPage = () => {
     if (!selectedPatientId || !socket) return;
     socket.emit("join-room", selectedPatientId);
       console.log("select id from effect",selectedPatientId)
+
+      let interval
     const fetchMessages = async () => {
       try {
         const messages = await getRoomMessages(selectedPatientId);
@@ -61,7 +63,7 @@ const DoctorChatPage = () => {
 
     fetchMessages();
 
-    const interval = setTimeout(fetchMessages,3000)
+    interval = setInterval(fetchMessages,3000)
     
 
     socket.off("receiveMessage"); // Add this line before setting new listener
