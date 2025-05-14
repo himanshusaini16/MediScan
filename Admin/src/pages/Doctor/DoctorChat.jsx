@@ -36,7 +36,7 @@ const DoctorChatPage = () => {
     iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
   };
 
-  const createRoomToken = (userId, doctorId) => {
+  const createRoomToken = (doctorId, userId) => {
     return [doctorId,userId].sort().join("_");
   };
 
