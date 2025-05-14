@@ -243,6 +243,7 @@ const DoctorChatPage = () => {
       {uniqueuser.slice().reverse().map((item, index) => {
          const reverseRoom = createRoomToken(item.userId,profileData._id);
       const roomToken= reverseRoom.split("_").reverse().join("_");
+      console.log("roomtoekn",roomToken)
         return (
           <option key={index} value={roomToken}>
             {item.userData?.name}
