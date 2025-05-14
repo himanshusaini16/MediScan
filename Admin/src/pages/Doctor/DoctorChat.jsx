@@ -255,6 +255,10 @@ const DoctorChatPage = () => {
     <h2 className="text-xl font-bold mb-4 pl-2">Patients</h2>
     {uniqueuser.slice().reverse().map((item, index) => {
       const roomToken = createRoomToken(item.userId, profileData._id);
+      console.log("room token",roomToken)
+      console.log("itemid",item.userId)
+      console.log("ProfileDataId",profileData._id)
+      console.log("item",item)
       return (
         <div
           key={index}
