@@ -37,7 +37,7 @@ const DoctorChatPage = () => {
   };
 
   const createRoomToken = (userId, doctorId) => {
-    return [userId, doctorId].sort().join("_");
+    return [doctorId,userId].sort().join("_");
   };
 
   useEffect(() => {
