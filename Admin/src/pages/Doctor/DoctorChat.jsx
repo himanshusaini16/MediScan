@@ -30,6 +30,8 @@ const DoctorChatPage = () => {
   const callTimeoutRef = useRef(null);
   const answeredRef = useRef(false);
 
+  console.log(selectedPatientId)
+
   const ICE_SERVERS = {
     iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
   };
@@ -128,7 +130,7 @@ const DoctorChatPage = () => {
     }
   };
 
-  console.log("patient Data",patientData)
+  console.log("patient id",selectedPatientId)
 
   const setupPeer = async (isInitiator) => {
     try {
