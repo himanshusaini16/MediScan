@@ -30,18 +30,15 @@ const DoctorChatPage = () => {
   const callTimeoutRef = useRef(null);
   const answeredRef = useRef(false);
 
-  console.log("id",selectedPatientId)
+  console.log("selectedPatiend Id",selectedPatientId)
 
   const ICE_SERVERS = {
     iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
   };
 
   const createRoomToken = (userId, doctorId) => {
-    console.log(userId)
     return [userId, doctorId].sort().join("_");
   };
-
-  
 
   useEffect(() => {
     if (!dToken) return;
@@ -61,7 +58,6 @@ const DoctorChatPage = () => {
       }
     };
 
-    console.log("userId",userId)
     fetchMessages();
     socket.emit("join-room", selectedPatientId);
 
@@ -95,12 +91,8 @@ const DoctorChatPage = () => {
     });
 
     const [userId] = selectedPatientId.split("_");
-    console.log("userid",userId)
     const selectedAppointment = appointments.find((appt) => appt.userId === userId);
     setPatientData(selectedAppointment?.userData);
-
-    console.log("select Appooitnt",selectedAppointment)
-    console.log("1",selectedAppointment?.userData)
 
     return () => {
       socket.off("receiveMessage");
@@ -110,9 +102,6 @@ const DoctorChatPage = () => {
       socket.off("webrtc-end-call");
     };
   }, [selectedPatientId, socket, appointments]);
-
-  console.log("appoinrmensts",appointments)
-  console.log("selectsd patend id" , selectedPatientId)
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -135,7 +124,6 @@ const DoctorChatPage = () => {
         setMessages((prev) => [...prev, sentMsg]);
         setNewMessage('');
         setImage(null); 
-
       }
     } catch {
       toast.error('Failed to send message');
