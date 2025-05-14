@@ -31,6 +31,7 @@ const Chat = () => {
   }, [doctorId, doctors]);
 
   useEffect(() => {
+    
     const fetchMessages = async () => {
       try {
         const msgs = await getRoomMessages(room);
@@ -38,10 +39,20 @@ const Chat = () => {
       } catch {
         toast.error('Failed to load messages');
       }
+
+      
     };
     fetchMessages();
+
+    const interval= setInterval(fetchMessages,3000)
+
+    return () =>{
+      clearInterval(interval)
+    }
+    
   }, [room, getRoomMessages]);
 
+  
 
   useEffect(() => {
     if (!socket) return;
