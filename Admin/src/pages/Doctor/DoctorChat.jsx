@@ -48,6 +48,7 @@ const DoctorChatPage = () => {
 
   useEffect(() => {
     if (!selectedPatientId || !socket) return;
+    socket.emit("join-room", selectedPatientId);
 
     const fetchMessages = async () => {
       try {
@@ -59,11 +60,13 @@ const DoctorChatPage = () => {
     };
 
     fetchMessages();
-    socket.emit("join-room", selectedPatientId);
+    
 
-    socket.on("receiveMessage", (msg) => {
-      setMessages((prev) => [...prev, msg]);
-    });
+    socket.off("receiveMessage"); // Add this line before setting new listener
+socket.on("receiveMessage", (msg) => {
+  setMessages((prev) => [...prev, msg]);
+});
+
 
     socket.on("webrtc-offer", async ({ sdp }) => {
       answeredRef.current = true;
@@ -131,6 +134,10 @@ const DoctorChatPage = () => {
   };
 
   console.log("patient id",selectedPatientId)
+
+  useEffect(() => {
+  console.log("Updated Messages", messages);
+}, [messages]);
 
   const setupPeer = async (isInitiator) => {
     try {
