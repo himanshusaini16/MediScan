@@ -61,8 +61,7 @@ const DoctorChatPage = () => {
       }
     };
 
-    console.log("id of user",selectedPatientId)
-
+    console.log("userId",userId)
     fetchMessages();
     socket.emit("join-room", selectedPatientId);
 
@@ -100,8 +99,9 @@ const DoctorChatPage = () => {
     const selectedAppointment = appointments.find((appt) => appt.userId === userId);
     setPatientData(selectedAppointment?.userData);
 
-    console.log(selectedAppointment)
-    console.log(selectedAppointment?.userData)
+    console.log("select Appooitnt",selectedAppointment)
+    console.log("1",selectedAppointment?.userData)
+
     return () => {
       socket.off("receiveMessage");
       socket.off("webrtc-offer");
@@ -111,7 +111,8 @@ const DoctorChatPage = () => {
     };
   }, [selectedPatientId, socket, appointments]);
 
-  console.log(appointments,"id",selectedPatientId)
+  console.log("appoinrmensts",appointments)
+  console.log("selectsd patend id" , selectedPatientId)
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
