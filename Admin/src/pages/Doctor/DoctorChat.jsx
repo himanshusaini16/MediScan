@@ -241,7 +241,8 @@ const DoctorChatPage = () => {
     >
       <option value="">-- Choose a patient --</option>
       {uniqueuser.slice().reverse().map((item, index) => {
-        const roomToken = createRoomToken(item.userId, profileData._id);
+         const reverseRoom = createRoomToken(item.userId,profileData._id);
+      const roomToken= reverseRoom.split("_").reverse().join("_");
         return (
           <option key={index} value={roomToken}>
             {item.userData?.name}
