@@ -127,7 +127,7 @@ console.log(user)
 console.log(doc)
 
 // Ensure correct order: userId first, then docId
-const room = `${user}_${doc}`;
+const room = userId
 
       console.log('room from senddoctorroute',room)
 
