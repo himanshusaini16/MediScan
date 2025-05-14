@@ -128,6 +128,8 @@ const DoctorChatPage = () => {
     }
   };
 
+  console.log("patient Data",patientData)
+
   const setupPeer = async (isInitiator) => {
     try {
       localStreamRef.current = await navigator.mediaDevices.getUserMedia({
