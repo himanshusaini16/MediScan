@@ -186,6 +186,8 @@ router.get("/getMessagesByDoctor/:room", authDoctor, async (req, res) => {
     console.log("Request Body",req.params)
     console.log("body",req.body)
 
+    console.log("room from get message:",room)
+
     const reversedRoom = room.split("_").reverse().join("_");
 
 console.log("Original Room:", room);
