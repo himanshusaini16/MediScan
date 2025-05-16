@@ -52,14 +52,17 @@ const Chat = () => {
     
   }, [room, getRoomMessages]);
 
+  {console.log("Socket Created",socket)}
   
 
   useEffect(() => {
     if (!socket) return;
     socket.emit('join-room', room);
+    console.log("join room chat page",room)
 
     socket.on('receive-message', (data) => {
       setMessages((prev) => [...prev, data.message]);
+      console.log(messages)
     });
 
     socket.on('receive-call', ({ offer, type }) => {

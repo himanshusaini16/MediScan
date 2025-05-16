@@ -148,7 +148,7 @@ const room = userId
         timestamp: new Date(),
       });
 
-      console.log('New message created:', newMessage);
+      // console.log('New message created:', newMessage);
 
       await newMessage.save();
       res
@@ -171,7 +171,7 @@ router.get("/getMessages/:room", allowUserOrDoctor, async (req, res) => {
     console.log(userId,room)
 
     const messages = await messageModel.find({ room }).sort({ createdAt: 1 });
-    console.log(messages)
+    // console.log(messages)
     res.status(200).json({ success: true, messages });
   } catch (error) {
     console.error(error);

@@ -50,6 +50,7 @@ const DoctorChatPage = () => {
     if (!selectedPatientId || !socket) return;
     socket.emit("join-room", selectedPatientId);
       console.log("select id from effect",selectedPatientId)
+      console.log("Sockert for doctor page",socket)
 
       let interval
     const fetchMessages = async () => {
@@ -138,7 +139,7 @@ socket.on("receiveMessage", (msg) => {
     }
   };
 
-  console.log("patient id",selectedPatientId)
+  // console.log("patient id",selectedPatientId)
 
   const setupPeer = async (isInitiator) => {
     try {
@@ -266,11 +267,11 @@ socket.on("receiveMessage", (msg) => {
     {uniqueuser.slice().reverse().map((item, index) => {
       const roomToken = createRoomToken(item.userId,profileData._id);
       {/* const roomToken= reverseRoom.split("_").reverse().join("_"); */}
-      console.log("room token",roomToken)
-      console.log("itemid",item.userId)
+      {/* console.log("room token",roomToken) */}
+      {/* console.log("itemid",item.userId)
       console.log("ProfileDataId",profileData._id)
       console.log("item",item)
-      console.log("itemuserData",item.userData)
+      console.log("itemuserData",item.userData) */}
       return (
         <div
           key={index}

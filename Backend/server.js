@@ -131,24 +131,30 @@ app.use('/api/chat',router)
 
 
 io.on('connection', (socket) => {
-    // console.log('New client connected: ' + socket.id);
+    console.log('New client connected: ' + socket.id);
 
   
     socket.on('join-room', (roomId) => {
         socket.join(roomId);
-        // console.log(`Socket ${socket.id} joined room ${roomId}`);
+        console.log(`Socket ${socket.id} joined room ${roomId}`);
     });
+
+    socket.on('error',(err)=>{
+        console.log("Socket Error :",err)
+    })
 
     
     socket.on('sendMessage', (messageData) => {
-        // console.log('Message sent to room:', messageData.room);
-        
-        
+        console.log('Message sent to room:', messageData.room);
+        try{
         io.to(messageData.room).emit('receive-message', {
             message: messageData.text, 
             senderRole: messageData.senderRole,
             timestamp: new Date().toISOString()
-        });
+        });}
+        catch(err){
+            console.log("errror from server",err)
+        }
     });
 
   
@@ -176,7 +182,7 @@ io.on('connection', (socket) => {
 
     // Handle client disconnection
     socket.on('disconnect', () => {
-        // console.log('Client disconnected: ' + socket.id);
+        console.log('Client disconnected: ' + socket.id);
     });
 });
 
