@@ -32,12 +32,16 @@ const Doctor = () => {
  
 
   
- 
+
   useEffect(() => {
+    if(token){
     loadUserProfileData();
     loadAppointments();
     setuserId(userData._id);
+    }
   }, [token]);
+
+
 
 
 
