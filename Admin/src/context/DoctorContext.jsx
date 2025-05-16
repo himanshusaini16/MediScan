@@ -2,6 +2,8 @@ import axios from "axios";
 import { createContext, useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import { toast } from "react-toastify";
+import { useContext } from "react";
+import { AppContext } from "../../../frontend/src/context/AppContext";
 
 export const DoctorContext = createContext();
 
@@ -11,7 +13,10 @@ const DoctorContextProvider = (props) => {
   const [dashData, setDashData] = useState(false);
   const [appointments, setAppointments] = useState([]);
   const [profileData, setProfileData] = useState("");
-  const [socket, setSocket] = useState(null);
+  // const [socket, setSocket] = useState(null);
+  const{socket} = useContext(AppContext)
+
+  console.log("Socket from frontend folder import from app Context",socket)
 
   const getAppointments = async () => {
     try {
@@ -99,22 +104,22 @@ const DoctorContextProvider = (props) => {
     }
   };
 
-  useEffect(() => {
-    const newSocket = io(backendUrl, {
-      withCredentials: true,
-      transports: ["websocket"],
-    });
+  // useEffect(() => {
+  //   const newSocket = io(backendUrl, {
+  //     withCredentials: true,
+  //     transports: ["websocket"],
+  //   });
 
-    newSocket.on("connect", () => {
-      console.log("Socket connected:", newSocket.id);
-    });
+  //   newSocket.on("connect", () => {
+  //     console.log("Socket connected:", newSocket.id);
+  //   });
 
-    setSocket(newSocket);
+  //   setSocket(newSocket);
 
-    return () => {
-      newSocket.close();
-    };
-  }, [backendUrl]);
+  //   return () => {
+  //     newSocket.close();
+  //   };
+  // }, [backendUrl]);
 
   const sendDoctorMessage = async (userId, message) => {
     try {

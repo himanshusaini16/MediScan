@@ -44,15 +44,15 @@ const Chat = () => {
     };
     fetchMessages();
 
-    const interval= setInterval(fetchMessages,3000)
+    // const interval= setInterval(fetchMessages,3000)
 
-    return () =>{
-      clearInterval(interval)
-    }
+    // return () =>{
+    //   clearInterval(interval)
+    // }
     
   }, [room, getRoomMessages]);
 
-  {console.log("Socket Created",socket)}
+  {console.log("Socket from chat page",socket)}
   
 
   useEffect(() => {

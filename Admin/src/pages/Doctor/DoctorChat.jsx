@@ -31,6 +31,7 @@ const DoctorChatPage = () => {
   const answeredRef = useRef(false);
 
   console.log("selectedPatiend Id",selectedPatientId)
+  
 
   const ICE_SERVERS = {
     iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
@@ -50,9 +51,9 @@ const DoctorChatPage = () => {
     if (!selectedPatientId || !socket) return;
     socket.emit("join-room", selectedPatientId);
       console.log("select id from effect",selectedPatientId)
-      console.log("Sockert for doctor page",socket)
+      console.log("Socket for doctor page",socket)
 
-      let interval
+      // let interval
     const fetchMessages = async () => {
       try {
         const messages = await getRoomMessages(selectedPatientId);
@@ -64,7 +65,7 @@ const DoctorChatPage = () => {
 
     fetchMessages();
 
-    interval = setInterval(fetchMessages,3000)
+    // interval = setInterval(fetchMessages,3000)
     
 
     socket.off("receiveMessage"); // Add this line before setting new listener
@@ -103,7 +104,7 @@ socket.on("receiveMessage", (msg) => {
     setPatientData(selectedAppointment?.userData);
 
     return () => {
-      clearInterval(interval)
+      // clearInterval(interval)
       socket.off("receiveMessage");
       socket.off("webrtc-offer");
       socket.off("webrtc-answer");
