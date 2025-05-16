@@ -51,7 +51,7 @@ const DoctorChatPage = () => {
     if (!selectedPatientId || !socket) return;
     socket.emit("join-room", selectedPatientId);
       console.log("select id from effect",selectedPatientId)
-      console.log("Socket for doctor page",socket)
+      console.log("Socket form doctor page",socket)
 
       // let interval
     const fetchMessages = async () => {
