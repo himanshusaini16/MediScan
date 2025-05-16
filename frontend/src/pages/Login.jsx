@@ -101,7 +101,7 @@ const Login = () => {
           {state === "Sign Up" ? "Create Account" : "Login"}
         </button>
         {state === "Sign Up" ? (
-          <p className="">Already have an account? <span onClick={()=>setState("Login")} className="text-primary underline cursor-pointer">Login here</span><br/><a href="https://medi-scan-ecru.vercel.app/" className="text-primary underline cursor-pointer">Click Here For Admin or Doctor Login</a></p>
+          <p className="">Already have an account? <span onClick={()=>setState("Login")} className="text-primary underline cursor-pointer">Login here</span><br/><p>Doctor or Admin? <a href="https://medi-scan-ecru.vercel.app/" className="text-primary underline cursor-pointer">Click Here</a></p></p>
         ) : (
           <p>Create a new Account? <span onClick={()=>setState("Sign Up")} className="text-primary underline cursor-pointer">click here</span><br/><span onClick={() => navigate('/forgot-password')} className="text-primary underline cursor-pointer">Forgot Password</span></p>
         )}

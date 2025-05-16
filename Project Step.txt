@@ -12,3 +12,6 @@ tensorflowjs_converter --input_format keras VericoseVeins.h5 tfjs_model/
 
 
 15:18 
+
+git rm --cached .env used to untrack the file 
+
