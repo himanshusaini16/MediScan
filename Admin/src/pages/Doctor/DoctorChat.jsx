@@ -249,8 +249,8 @@ socket.on("receiveMessage", (msg) => {
     >
       <option value="">-- Choose a patient --</option>
       {uniqueuser.slice().reverse().map((item, index) => {
-       const reverseRoom = createRoomToken(item.userId,profileData._id);
-      const roomToken= reverseRoom.split("_").reverse().join("_");
+       const roomToken = createRoomToken(item.userId,profileData._id);
+      {/* const roomToken= reverseRoom.split("_").reverse().join("_"); */}
       console.log("room token from  mobile view",roomToken)
         return (
           <option key={index} value={roomToken}>
@@ -264,8 +264,8 @@ socket.on("receiveMessage", (msg) => {
   <div className="hidden sm:block border-r overflow-y-auto pr-2 w-full sm:w-1/4">
     <h2 className="text-xl font-bold mb-4 pl-2">Patients</h2>
     {uniqueuser.slice().reverse().map((item, index) => {
-      const reverseRoom = createRoomToken(item.userId,profileData._id);
-      const roomToken= reverseRoom.split("_").reverse().join("_");
+      const roomToken = createRoomToken(item.userId,profileData._id);
+      {/* const roomToken= reverseRoom.split("_").reverse().join("_"); */}
       console.log("room token",roomToken)
       console.log("itemid",item.userId)
       console.log("ProfileDataId",profileData._id)
