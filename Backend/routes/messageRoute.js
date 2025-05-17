@@ -4,7 +4,6 @@ import authUser from "../middleware/authUser.js";
 import authDoctor from "../middleware/authDoctor.js";
 import upload from "../middleware/multer.js";
 import { v2 as cloudinary } from "cloudinary";
-import { io } from "../server.js";
 
 const router = express.Router();
 
@@ -75,19 +74,9 @@ router.post(
       // console.log(newMessage);
 
       await newMessage.save();
-
-// Emit real-time update to room via Socket.IO
-io.to(roomId).emit('receive-message', {
-  message: newMessage.text,
-  senderRole: newMessage.senderRole,
-  type: newMessage.type,
-  imageUrl: newMessage.imageUrl,
-  timestamp: newMessage.createdAt,
-  senderId: newMessage.senderId,
-});
-
-res.status(200).json({ success: true, message: "Message sent", data: newMessage });
-
+      res
+        .status(200)
+        .json({ success: true, message: "Message sent", data: newMessage });
     } catch (error) {
       console.error(error);
       res.status(500).json({ success: false, message: error.message });
@@ -161,19 +150,10 @@ const room = userId
 
       // console.log('New message created:', newMessage);
 
- await newMessage.save();
-
-io.to(room).emit('receive-message', {
-  message: newMessage.text,
-  senderRole: newMessage.senderRole,
-  type: newMessage.type,
-  imageUrl: newMessage.imageUrl,
-  timestamp: newMessage.createdAt,
-  senderId: newMessage.senderId,
-});
-
-res.status(200).json({ success: true, message: "Message sent", data: newMessage });
-
+      await newMessage.save();
+      res
+        .status(200)
+        .json({ success: true, message: "Message sent", data: newMessage });
     } catch (error) {
       console.error('Error in sendDoctorMessage:', error);
       res
