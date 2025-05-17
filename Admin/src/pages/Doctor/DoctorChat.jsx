@@ -387,35 +387,45 @@ socket.on("receiveMessage", (msg) => {
         </div>
 
        
-        <form className="flex flex-col sm:flex-row w-full gap-2 mt-3" onSubmit={handleSendMessage}>
-          <input
-            type="text"
-            className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Type a message..."
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-          />
+     <form
+  className="flex flex-col sm:flex-row w-full gap-2 mt-3 px-2"
+  onSubmit={handleSendMessage}
+>
+  {/* Text input */}
+  <input
+    type="text"
+    className="w-full sm:flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    placeholder="Type a message..."
+    value={newMessage}
+    onChange={(e) => setNewMessage(e.target.value)}
+  />
 
-          <div className="flex items-center bg-blue-500 p-2 rounded-lg cursor-pointer hover:bg-blue-600">
-            <label htmlFor="file-input" className="flex items-center text-white text-sm font-semibold cursor-pointer">
-              📎
-              <span className="ml-1 hidden sm:inline">Choose file</span>
-            </label>
-            <input
-              id="file-input"
-              type="file"
-              onChange={(e) => setImage(e.target.files[0])}
-              className="hidden"
-            />
-          </div>
+  {/* File upload */}
+  <div className="flex items-center justify-center sm:justify-start bg-blue-500 p-2 rounded-lg cursor-pointer hover:bg-blue-600">
+    <label
+      htmlFor="file-input"
+      className="flex items-center text-white text-sm font-semibold cursor-pointer"
+    >
+      📎
+      <span className="ml-1 hidden sm:inline">Choose file</span>
+    </label>
+    <input
+      id="file-input"
+      type="file"
+      onChange={(e) => setImage(e.target.files[0])}
+      className="hidden"
+    />
+  </div>
 
-          <button
-            type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-          >
-            Send
-          </button>
-        </form>
+  {/* Send button */}
+  <button
+    type="submit"
+    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 w-full sm:w-auto"
+  >
+    Send
+  </button>
+</form>
+
       </>
     )}
   </div>
