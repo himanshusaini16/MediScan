@@ -201,4 +201,4 @@ server.listen(port,()=>{
     console.log("Server Started at Port No",port)
 })
 
-export {vericoseModel,modelDiabetes,modelHeartdisease,modelEyedisease,modelSkincancer}
+export {vericoseModel,modelDiabetes,modelHeartdisease,modelEyedisease,modelSkincancer,io}
