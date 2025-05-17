@@ -30,15 +30,14 @@ const DoctorChatPage = () => {
   const callTimeoutRef = useRef(null);
   const answeredRef = useRef(false);
 
-  console.log("selectedPatiend Id",selectedPatientId)
-  
+  console.log("selectedPatiend Id", selectedPatientId);
 
   const ICE_SERVERS = {
     iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
   };
 
   const createRoomToken = (doctorId, userId) => {
-    return [doctorId,userId].sort().join("_");
+    return [doctorId, userId].sort().join("_");
   };
 
   useEffect(() => {
@@ -50,10 +49,10 @@ const DoctorChatPage = () => {
   useEffect(() => {
     if (!selectedPatientId || !socket) return;
     socket.emit("join-room", selectedPatientId);
-      console.log("select id from effect",selectedPatientId)
-      console.log("Socket form doctor page",socket)
+    console.log("select id from effect", selectedPatientId);
+    console.log("Socket form doctor page", socket);
 
-      let interval
+    let interval;
     const fetchMessages = async () => {
       try {
         const messages = await getRoomMessages(selectedPatientId);
@@ -65,20 +64,20 @@ const DoctorChatPage = () => {
 
     fetchMessages();
 
-    interval = setInterval(fetchMessages,3000)
-    
+    interval = setInterval(fetchMessages, 3000);
 
     socket.off("receiveMessage"); // Add this line before setting new listener
-socket.on("receiveMessage", (msg) => {
-  setMessages((prev) => [...prev, msg]);
-});
-
+    socket.on("receiveMessage", (msg) => {
+      setMessages((prev) => [...prev, msg]);
+    });
 
     socket.on("webrtc-offer", async ({ sdp }) => {
       answeredRef.current = true;
       clearTimeout(callTimeoutRef.current);
       await setupPeer(false);
-      await peerConnectionRef.current.setRemoteDescription(new RTCSessionDescription(sdp));
+      await peerConnectionRef.current.setRemoteDescription(
+        new RTCSessionDescription(sdp)
+      );
       const answer = await peerConnectionRef.current.createAnswer();
       await peerConnectionRef.current.setLocalDescription(answer);
       socket.emit("webrtc-answer", { sdp: answer, roomId: selectedPatientId });
@@ -88,11 +87,15 @@ socket.on("receiveMessage", (msg) => {
     socket.on("webrtc-answer", async ({ sdp }) => {
       answeredRef.current = true;
       clearTimeout(callTimeoutRef.current);
-      await peerConnectionRef.current.setRemoteDescription(new RTCSessionDescription(sdp));
+      await peerConnectionRef.current.setRemoteDescription(
+        new RTCSessionDescription(sdp)
+      );
     });
 
     socket.on("webrtc-ice-candidate", ({ candidate }) => {
-      peerConnectionRef.current?.addIceCandidate(new RTCIceCandidate(candidate));
+      peerConnectionRef.current?.addIceCandidate(
+        new RTCIceCandidate(candidate)
+      );
     });
 
     socket.on("webrtc-end-call", () => {
@@ -100,11 +103,13 @@ socket.on("receiveMessage", (msg) => {
     });
 
     const [userId] = selectedPatientId.split("_");
-    const selectedAppointment = appointments.find((appt) => appt.userId === userId);
+    const selectedAppointment = appointments.find(
+      (appt) => appt.userId === userId
+    );
     setPatientData(selectedAppointment?.userData);
 
     return () => {
-      clearInterval(interval)
+      clearInterval(interval);
       socket.off("receiveMessage");
       socket.off("webrtc-offer");
       socket.off("webrtc-answer");
@@ -123,8 +128,8 @@ socket.on("receiveMessage", (msg) => {
 
     const payload = {
       text: newMessage,
-      type: image ? 'image' : 'text',
-      image, 
+      type: image ? "image" : "text",
+      image,
       timestamp: new Date().toISOString(),
     };
 
@@ -132,11 +137,11 @@ socket.on("receiveMessage", (msg) => {
       const sentMsg = await sendDoctorMessage(selectedPatientId, payload);
       if (sentMsg) {
         setMessages((prev) => [...prev, sentMsg]);
-        setNewMessage('');
-        setImage(null); 
+        setNewMessage("");
+        setImage(null);
       }
     } catch {
-      toast.error('Failed to send message');
+      toast.error("Failed to send message");
     }
   };
 
@@ -232,205 +237,247 @@ socket.on("receiveMessage", (msg) => {
   };
 
   const uniqueuser = Array.from(
-    new Map(appointments.map(item => [item.userId, item])).values()
+    new Map(appointments.map((item) => [item.userId, item])).values()
   );
-
 
   if (!uniqueuser || !profileData)
     return <p className="text-center mt-10 text-gray-500">Loading chat...</p>;
 
   return (
     <div className="flex flex-col sm:flex-row w-full p-4 h-screen">
+      <div className="sm:hidden mb-4">
+        <label className="block mb-2 text-sm font-medium text-gray-700">
+          Select Patient
+        </label>
+        <select
+          onChange={(e) => setSelectedPatientId(e.target.value)}
+          className="w-full p-2 border rounded-md"
+          value={selectedPatientId}
+        >
+          <option value="">-- Choose a patient --</option>
+          {uniqueuser
+            .slice()
+            .reverse()
+            .map((item, index) => {
+              const roomToken = createRoomToken(item.userId, profileData._id);
+              {
+                /* const roomToken= reverseRoom.split("_").reverse().join("_"); */
+              }
+              console.log("room token from  mobile view", roomToken);
+              return (
+                <option key={index} value={roomToken}>
+                  {item.userData?.name}
+                </option>
+              );
+            })}
+        </select>
+      </div>
 
-  <div className="sm:hidden mb-4">
-    <label className="block mb-2 text-sm font-medium text-gray-700">Select Patient</label>
-    <select
-      onChange={(e) => setSelectedPatientId(e.target.value)}
-      className="w-full p-2 border rounded-md"
-      value={selectedPatientId}
-    >
-      <option value="">-- Choose a patient --</option>
-      {uniqueuser.slice().reverse().map((item, index) => {
-       const roomToken = createRoomToken(item.userId,profileData._id);
-      {/* const roomToken= reverseRoom.split("_").reverse().join("_"); */}
-      console.log("room token from  mobile view",roomToken)
-        return (
-          <option key={index} value={roomToken}>
-            {item.userData?.name}
-          </option>
-        );
-      })}
-    </select>
-  </div>
-
-  <div className="hidden sm:block border-r overflow-y-auto pr-2 w-full sm:w-1/4">
-    <h2 className="text-xl font-bold mb-4 pl-2">Patients</h2>
-    {uniqueuser.slice().reverse().map((item, index) => {
-      const roomToken = createRoomToken(item.userId,profileData._id);
-      {/* const roomToken= reverseRoom.split("_").reverse().join("_"); */}
-      {/* console.log("room token",roomToken) */}
-      {/* console.log("itemid",item.userId)
+      <div className="hidden sm:block border-r overflow-y-auto pr-2 w-full sm:w-1/4">
+        <h2 className="text-xl font-bold mb-4 pl-2">Patients</h2>
+        {uniqueuser
+          .slice()
+          .reverse()
+          .map((item, index) => {
+            const roomToken = createRoomToken(item.userId, profileData._id);
+            {
+              /* const roomToken= reverseRoom.split("_").reverse().join("_"); */
+            }
+            {
+              /* console.log("room token",roomToken) */
+            }
+            {
+              /* console.log("itemid",item.userId)
       console.log("ProfileDataId",profileData._id)
       console.log("item",item)
-      console.log("itemuserData",item.userData) */}
-      return (
-        <div
-          key={index}
-          onClick={() => setSelectedPatientId(roomToken)}
-          className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer mb-2 transition-all ${
-            selectedPatientId === roomToken ? "bg-blue-100" : "hover:bg-gray-100"
-          }`}
-        >
-          <img
-            className="w-10 h-10 rounded-full object-cover"
-            src={item.userData?.image || "/default-user.png"}
-            alt={item.userData?.name}
-          />
-          <div className="flex flex-col justify-center text-left">
-            <span className="font-medium text-gray-800">{item.userData?.name}</span>
-          </div>
-        </div>
-      );
-    })}
-  </div>
-
-     
-      <div className="flex flex-col sm:flex-row w-full h-screen p-2 sm:p-4">
-
-  <div className="w-full sm:w-3/4 flex flex-col justify-between sm:pl-4">
-    {!selectedPatientId ? (
-      <p className="text-center mt-10 text-gray-500 text-sm sm:text-base">Select a patient to start chatting</p>
-    ) : (
-      <>
-        
-        <div className="bg-white border rounded-lg shadow-md p-3 flex flex-col sm:flex-row sm:justify-between items-start sm:items-center mb-2 gap-2">
-          <div className="flex items-center">
-            <img
-              className="w-10 h-10 rounded-full object-cover"
-              src={patientData?.image || "/default-user.png"}
-              alt={patientData?.name}
-            />
-            <div className="ml-3">
-              <h3 className="text-base font-semibold">{patientData?.name}</h3>
-              <span className="text-sm text-gray-500">{patientData?.email}</span>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap gap-2 mt-2 sm:mt-0">
-            {!inCall ? (
-              <>
-                <button
-                  onClick={() => startCall("audio")}
-                  className="bg-green-500 text-white px-3 py-1.5 rounded-full text-sm hover:bg-green-600"
-                >
-                  Audio Call
-                </button>
-                <button
-                  onClick={() => startCall("video")}
-                  className="bg-red-500 text-white px-3 py-1.5 rounded-full text-sm hover:bg-red-600"
-                >
-                  Video Call
-                </button>
-              </>
-            ) : (
-              <button
-                onClick={() => endCall(true)}
-                className="bg-gray-800 text-white px-3 py-1.5 rounded-full text-sm hover:bg-gray-700"
-              >
-                End Call
-              </button>
-            )}
-          </div>
-        </div>
-
-      
-        {inCall && (
-          <div className="flex flex-col sm:flex-row gap-4 mb-4">
-            <video ref={localVideoRef} autoPlay muted playsInline className="w-full sm:w-1/2 h-52 sm:h-64 bg-black rounded" />
-            <video ref={remoteVideoRef} autoPlay playsInline className="w-full sm:w-1/2 h-52 sm:h-64 bg-black rounded" />
-          </div>
-        )}
-
-       
-        <div className="bg-white border rounded-lg shadow-md overflow-y-auto p-3 flex flex-col gap-3 h-[300px] sm:h-full">
-          {messages.length === 0 ? (
-            <div className="text-center text-gray-500 text-sm">No messages yet...</div>
-          ) : (
-            messages.map((msg, idx) => (
+      console.log("itemuserData",item.userData) */
+            }
+            return (
               <div
-                key={idx}
-                className={`max-w-[75%] p-2 rounded-lg shadow-sm text-sm ${
-                  msg.senderRole === "doctor" ? "self-end bg-blue-100" : "self-start bg-gray-200"
+                key={index}
+                onClick={() => setSelectedPatientId(roomToken)}
+                className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer mb-2 transition-all ${
+                  selectedPatientId === roomToken
+                    ? "bg-blue-100"
+                    : "hover:bg-gray-100"
                 }`}
               >
-                {msg.type === "image" ? (
-                  <img src={msg.imageUrl} alt="Message" className="w-48 h-48 object-cover rounded-lg" />
-                ) : (
-                  <p>{msg.text}</p>
-                )}
-                <p className="mt-1 text-[10px] text-gray-500">
-                  {new Date(msg.createdAt).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })},{" "}
-                  {new Date(msg.createdAt).toLocaleTimeString("en-US", {
-                    hour: "numeric",
-                    minute: "2-digit",
-                    hour12: true,
-                  })}
-                </p>
+                <img
+                  className="w-10 h-10 rounded-full object-cover"
+                  src={item.userData?.image || "/default-user.png"}
+                  alt={item.userData?.name}
+                />
+                <div className="flex flex-col justify-center text-left">
+                  <span className="font-medium text-gray-800">
+                    {item.userData?.name}
+                  </span>
+                </div>
               </div>
-            ))
+            );
+          })}
+      </div>
+
+      <div className="flex flex-col sm:flex-row w-full h-screen p-2 sm:p-4">
+        <div className="w-full sm:w-3/4 flex flex-col justify-between sm:pl-4">
+          {!selectedPatientId ? (
+            <p className="text-center mt-10 text-gray-500 text-sm sm:text-base">
+              Select a patient to start chatting
+            </p>
+          ) : (
+            <>
+              <div className="bg-white border rounded-lg shadow-md p-3 flex flex-col sm:flex-row sm:justify-between items-start sm:items-center mb-2 gap-2">
+                <div className="flex items-center">
+                  <img
+                    className="w-10 h-10 rounded-full object-cover"
+                    src={patientData?.image || "/default-user.png"}
+                    alt={patientData?.name}
+                  />
+                  <div className="ml-3">
+                    <h3 className="text-base font-semibold">
+                      {patientData?.name}
+                    </h3>
+                    <span className="text-sm text-gray-500">
+                      {patientData?.email}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-2 mt-2 sm:mt-0">
+                  {!inCall ? (
+                    <>
+                      <button
+                        onClick={() => startCall("audio")}
+                        className="bg-green-500 text-white px-3 py-1.5 rounded-full text-sm hover:bg-green-600"
+                      >
+                        Audio Call
+                      </button>
+                      <button
+                        onClick={() => startCall("video")}
+                        className="bg-red-500 text-white px-3 py-1.5 rounded-full text-sm hover:bg-red-600"
+                      >
+                        Video Call
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={() => endCall(true)}
+                      className="bg-gray-800 text-white px-3 py-1.5 rounded-full text-sm hover:bg-gray-700"
+                    >
+                      End Call
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {inCall && (
+                <div className="flex flex-col sm:flex-row gap-4 mb-4">
+                  <video
+                    ref={localVideoRef}
+                    autoPlay
+                    muted
+                    playsInline
+                    className="w-full sm:w-1/2 h-52 sm:h-64 bg-black rounded"
+                  />
+                  <video
+                    ref={remoteVideoRef}
+                    autoPlay
+                    playsInline
+                    className="w-full sm:w-1/2 h-52 sm:h-64 bg-black rounded"
+                  />
+                </div>
+              )}
+
+              <div className="bg-white border rounded-lg shadow-md overflow-y-auto p-3 flex flex-col gap-3 h-[300px] sm:h-full">
+                {messages.length === 0 ? (
+                  <div className="text-center text-gray-500 text-sm">
+                    No messages yet...
+                  </div>
+                ) : (
+                  messages.map((msg, idx) => (
+                    <div
+                      key={idx}
+                      className={`max-w-[75%] p-2 rounded-lg shadow-sm text-sm ${
+                        msg.senderRole === "doctor"
+                          ? "self-end bg-blue-100"
+                          : "self-start bg-gray-200"
+                      }`}
+                    >
+                      {msg.type === "image" ? (
+                        <img
+                          src={msg.imageUrl}
+                          alt="Message"
+                          className="w-48 h-48 object-cover rounded-lg"
+                        />
+                      ) : (
+                        <p>{msg.text}</p>
+                      )}
+                      <p className="mt-1 text-[10px] text-gray-500">
+                        {new Date(msg.createdAt).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
+                        ,{" "}
+                        {new Date(msg.createdAt).toLocaleTimeString("en-US", {
+                          hour: "numeric",
+                          minute: "2-digit",
+                          hour12: true,
+                        })}
+                      </p>
+                    </div>
+                  ))
+                )}
+                <div ref={messagesEndRef} />
+              </div>
+
+              <form
+                className="flex flex-col sm:flex-row w-full gap-2 mt-3 px-2"
+                onSubmit={handleSendMessage}
+              >
+                {/* Text input */}
+                <input
+                  type="text"
+                  className="w-full sm:flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Type a message..."
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                />
+
+                {/* File upload with camera/gallery icons */}
+                <div className="flex items-center justify-center  p-2 rounded-lg cursor-pointer ">
+                  <label
+                    htmlFor="file-input"
+                    className="flex items-center space-x-2 text-white text-lg cursor-pointer"
+                  >
+                    <span title="Gallery">
+                      <img
+                        className="w-6 h-6"
+                        src="/gallery-svgrepo-com.svg"
+                        alt="Gallery Icon"
+                      />
+                    </span>
+                  </label>
+                  <input
+                    id="file-input"
+                    type="file"
+                    onChange={(e) => setImage(e.target.files[0])}
+                    className="hidden"
+                    accept="image/*"
+                  />
+
+                  {/* Send button */}
+                  <button
+                    type="submit"
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 w-full sm:w-auto"
+                  >
+                    Send
+                  </button>
+                </div>
+              </form>
+            </>
           )}
-          <div ref={messagesEndRef} />
         </div>
-
-       
-     <form
-  className="flex flex-col sm:flex-row w-full gap-2 mt-3 px-2"
-  onSubmit={handleSendMessage}
->
-  {/* Text input */}
-  <input
-    type="text"
-    className="w-full sm:flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-    placeholder="Type a message..."
-    value={newMessage}
-    onChange={(e) => setNewMessage(e.target.value)}
-  />
-
-  {/* File upload with camera/gallery icons */}
-  <div className="flex items-center justify-center  p-2 rounded-lg cursor-pointer ">
-    <label
-      htmlFor="file-input"
-      className="flex items-center space-x-2 text-white text-lg cursor-pointer"
-    >
-      <span title="Gallery"><img className="w-15" src="/gallery-svgrepo-com.svg"></img></span>
-    </label>
-    <input
-      id="file-input"
-      type="file"
-      onChange={(e) => setImage(e.target.files[0])}
-      className="hidden"
-      accept="image/*"
-    />
-  </div>
-
-  {/* Send button */}
-  <button
-    type="submit"
-    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 w-full sm:w-auto"
-  >
-    Send
-  </button>
-</form>
-
-      </>
-    )}
-  </div>
-</div>
-
+      </div>
     </div>
   );
 };
