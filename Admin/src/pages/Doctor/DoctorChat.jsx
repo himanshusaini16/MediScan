@@ -401,13 +401,12 @@ socket.on("receiveMessage", (msg) => {
   />
 
   {/* File upload with camera/gallery icons */}
-  <div className="flex items-center justify-center bg-blue-500 p-2 rounded-lg cursor-pointer hover:bg-blue-600">
+  <div className="flex items-center justify-center  p-2 rounded-lg cursor-pointer ">
     <label
       htmlFor="file-input"
       className="flex items-center space-x-2 text-white text-lg cursor-pointer"
     >
-      <span title="Camera">📷</span>
-      <span title="Gallery">🖼️</span>
+      <span title="Gallery"><img src="/gallery-svgrepo-com.svg"></img></span>
     </label>
     <input
       id="file-input"
