@@ -3,7 +3,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { io } from "socket.io-client";
 import { useContext } from "react";
-import { SharedContext } from "../../../Shared/context/SharedContext";
+import { SharedContext } from "@shared/context/SharedContext";
+
 
 export const AppContext = createContext();
 
