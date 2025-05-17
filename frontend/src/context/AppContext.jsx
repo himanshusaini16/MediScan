@@ -2,8 +2,8 @@ import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { io } from "socket.io-client";
-import { useContext } from "react";
-import { SharedContext } from "@shared/context/SharedContext";
+// import { useContext } from "react";
+// import { SharedContext } from "@shared/context/SharedContext";
 
 
 export const AppContext = createContext();
@@ -14,8 +14,8 @@ const AppContextProvider = (props) => {
   const [doctors, setDoctors] = useState([]);
   const [token, setToken] = useState(localStorage.getItem("token") || false);
   const [userData, setUserData] = useState(false);
-  // const [socket, setSocket] = useState(null);
-  const {socket} = useContext(SharedContext)
+  const [socket, setSocket] = useState(null);
+  // const {socket} = useContext(SharedContext)
   const [appointments, setAppointments] = useState([]);
 
   console.log("Socket on App Context",socket)
@@ -75,24 +75,24 @@ const AppContextProvider = (props) => {
     }
   }, [token]);
 
-  // useEffect(() => {
-  //   const newSocket = io(backendUrl, {
-  //     withCredentials: true,
-  //     transports: ["websocket"],
-  //   });
-  //   setSocket(newSocket);
+  useEffect(() => {
+    const newSocket = io(backendUrl, {
+      withCredentials: true,
+      transports: ["websocket"],
+    });
+    setSocket(newSocket);
 
-  //   return () => newSocket.close();
-  // }, [backendUrl]);
+    return () => newSocket.close();
+  }, [backendUrl]);
 
-  // useEffect(() => {
-  //   getDoctorsData();
-  // }, []);
+  useEffect(() => {
+    getDoctorsData();
+  }, []);
 
-  // useEffect(() => {
-  //   if (token) loadUserProfileData();
-  //   else setUserData(false);
-  // }, [token]);
+  useEffect(() => {
+    if (token) loadUserProfileData();
+    else setUserData(false);
+  }, [token]);
 
   const sendMessage = async (room, message, senderRole = "user") => {
     try {
