@@ -17,12 +17,13 @@ const SharedContextProvider = (props) => {
     });
     setSocket(newSocket);
 
-    console.log("socket from Shared Context",socket)
+    
 
     return () => newSocket.close();
   }, [backendUrl]);
 
 
+  console.log("socket from Shared Context",socket)
 
   const value = { socket };
 
