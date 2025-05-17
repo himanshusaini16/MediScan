@@ -128,11 +128,6 @@ app.use('/api/doctors',doctorRouter)
 app.use('/api/user',userRouter)
 app.use('/api/chat',router)
 
-app.use((req, res, next) => {
-  req.io = io; // Pass Socket.IO instance to all routes
-  next();
-});
-
 
 
 io.on('connection', (socket) => {
