@@ -18,7 +18,7 @@ const AppContextProvider = (props) => {
   // const {socket} = useContext(SharedContext)
   const [appointments, setAppointments] = useState([]);
 
-  console.log("Socket on App Context",socket)
+
 
   const loadAppointments = async () => {
     try {
