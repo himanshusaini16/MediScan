@@ -146,6 +146,7 @@ io.on('connection', (socket) => {
     
     socket.on('sendMessage', (messageData) => {
         console.log('Message sent to room:', messageData.room);
+        console.log("message Data",messageData)
         try{
         io.to(messageData.room).emit('receive-message', {
             message: messageData.text, 
