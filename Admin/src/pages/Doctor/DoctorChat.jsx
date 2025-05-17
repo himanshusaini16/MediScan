@@ -406,7 +406,7 @@ socket.on("receiveMessage", (msg) => {
       htmlFor="file-input"
       className="flex items-center space-x-2 text-white text-lg cursor-pointer"
     >
-      <span title="Gallery"><img src="/gallery-svgrepo-com.svg"></img></span>
+      <span title="Gallery"><img className="w-15" src="/gallery-svgrepo-com.svg"></img></span>
     </label>
     <input
       id="file-input"
