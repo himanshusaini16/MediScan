@@ -400,20 +400,21 @@ socket.on("receiveMessage", (msg) => {
     onChange={(e) => setNewMessage(e.target.value)}
   />
 
-  {/* File upload */}
-  <div className="flex items-center justify-center sm:justify-start bg-blue-500 p-2 rounded-lg cursor-pointer hover:bg-blue-600">
+  {/* File upload with camera/gallery icons */}
+  <div className="flex items-center justify-center bg-blue-500 p-2 rounded-lg cursor-pointer hover:bg-blue-600">
     <label
       htmlFor="file-input"
-      className="flex items-center text-white text-sm font-semibold cursor-pointer"
+      className="flex items-center space-x-2 text-white text-lg cursor-pointer"
     >
-      📎
-      <span className="ml-1 hidden sm:inline">Choose file</span>
+      <span title="Camera">📷</span>
+      <span title="Gallery">🖼️</span>
     </label>
     <input
       id="file-input"
       type="file"
       onChange={(e) => setImage(e.target.files[0])}
       className="hidden"
+      accept="image/*"
     />
   </div>
 
