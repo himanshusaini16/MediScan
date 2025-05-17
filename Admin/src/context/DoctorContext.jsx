@@ -1,9 +1,10 @@
 import axios from "axios";
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 import { io } from "socket.io-client";
 import { toast } from "react-toastify";
-import { useContext } from "react";
-import { SharedContext } from "@shared/context/SharedContext";
+// import { AppContext } from "../../../frontend/src/context/AppContext";
+
+// import { SharedContext } from "@shared/context/SharedContext";
 
 
 
@@ -15,10 +16,12 @@ const DoctorContextProvider = (props) => {
   const [dashData, setDashData] = useState(false);
   const [appointments, setAppointments] = useState([]);
   const [profileData, setProfileData] = useState("");
-  // const [socket, setSocket] = useState(null);
-  const{socket} = useContext(SharedContext)
+  const [socket, setSocket] = useState(null);
+  // const{socket} = useContext(SharedContext)
 
-  console.log("Socket on Doctor Context",socket)
+  // const {socket} = useContext(AppContext)
+
+  // console.log("Socket on Doctor Context from import from AppContext",socket)
 
   const getAppointments = async () => {
     try {
@@ -106,22 +109,24 @@ const DoctorContextProvider = (props) => {
     }
   };
 
-  // useEffect(() => {
-  //   const newSocket = io(backendUrl, {
-  //     withCredentials: true,
-  //     transports: ["websocket"],
-  //   });
+  useEffect(() => {
+    const newSocket = io(backendUrl, {
+      withCredentials: true,
+      transports: ["websocket"],
+    });
 
-  //   newSocket.on("connect", () => {
-  //     console.log("Socket connected:", newSocket.id);
-  //   });
+    newSocket.on("connect", () => {
+      console.log("Socket connected:", newSocket.id);
+    });
 
-  //   setSocket(newSocket);
+    setSocket(newSocket);
 
-  //   return () => {
-  //     newSocket.close();
-  //   };
-  // }, [backendUrl]);
+    return () => {
+      newSocket.close();
+    };
+  }, [backendUrl]);
+
+  console.log("Socket from Doc ",socket)
 
   const sendDoctorMessage = async (userId, message) => {
     try {
