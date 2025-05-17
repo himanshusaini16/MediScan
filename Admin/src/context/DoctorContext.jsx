@@ -3,7 +3,8 @@ import { createContext, useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import { toast } from "react-toastify";
 import { useContext } from "react";
-import { SharedContext } from "../../../Shared/context/SharedContext";
+import { SharedContext } from "@shared/context/SharedContext";
+
 
 
 export const DoctorContext = createContext();
