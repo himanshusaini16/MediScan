@@ -435,6 +435,7 @@ const DoctorChatPage = () => {
                 onSubmit={handleSendMessage}
               >
                 {/* Text input */}
+                <div className="flex items-center justify-center  p-2 rounded-lg cursor-pointer ">
                 <input
                   type="text"
                   className="w-full sm:flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -444,14 +445,14 @@ const DoctorChatPage = () => {
                 />
 
                 {/* File upload with camera/gallery icons */}
-                <div className="flex items-center justify-center  p-2 rounded-lg cursor-pointer ">
+                
                   <label
                     htmlFor="file-input"
                     className="flex items-center space-x-2 text-white text-lg cursor-pointer"
                   >
                     <span title="Gallery">
                       <img
-                        className="w-6 h-6"
+                        className="w-8 h-8"
                         src="/gallery-svgrepo-com.svg"
                         alt="Gallery Icon"
                       />
