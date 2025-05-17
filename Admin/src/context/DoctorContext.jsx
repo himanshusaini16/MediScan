@@ -18,7 +18,7 @@ const DoctorContextProvider = (props) => {
   // const [socket, setSocket] = useState(null);
   const{socket} = useContext(SharedContext)
 
-  console.log("Socket from frontend folder import from app Context",socket)
+  console.log("Socket on Doctor Context",socket)
 
   const getAppointments = async () => {
     try {
