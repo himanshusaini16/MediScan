@@ -3,7 +3,8 @@ import { createContext, useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import { toast } from "react-toastify";
 import { useContext } from "react";
-import { AppContext } from "../../../frontend/src/context/AppContext";
+import { SharedContext } from "../../../Shared/context/SharedContext";
+
 
 export const DoctorContext = createContext();
 
@@ -14,7 +15,7 @@ const DoctorContextProvider = (props) => {
   const [appointments, setAppointments] = useState([]);
   const [profileData, setProfileData] = useState("");
   // const [socket, setSocket] = useState(null);
-  const{socket} = useContext(AppContext)
+  const{socket} = useContext(SharedContext)
 
   console.log("Socket from frontend folder import from app Context",socket)
 
