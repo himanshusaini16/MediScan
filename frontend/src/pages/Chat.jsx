@@ -8,6 +8,9 @@ const Chat = () => {
   const { id: room } = useParams();
   const { socket, sendMessage, getRoomMessages, userData, doctors } = useContext(AppContext);
 
+
+  console.log("Socket on Chat Page",socket)
+
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [userId, doctorId] = room.split('_');
@@ -52,7 +55,7 @@ const Chat = () => {
     
   }, [room, getRoomMessages]);
 
-  {console.log("Socket from chat page",socket)}
+  // {console.log("Socket from chat page",socket)}
   
 
   useEffect(() => {

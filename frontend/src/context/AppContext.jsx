@@ -18,6 +18,8 @@ const AppContextProvider = (props) => {
   const {socket} = useContext(SharedContext)
   const [appointments, setAppointments] = useState([]);
 
+  console.log("Socket on App Context",socket)
+
   const loadAppointments = async () => {
     try {
       const { data } = await axios.get(backendUrl + "/api/user/appointments", {
