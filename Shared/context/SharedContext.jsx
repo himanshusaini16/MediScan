@@ -1,16 +1,16 @@
 import { io } from "socket.io-client";
-
 import { createContext, useEffect, useState } from "react";
-export const SharedContext = createContext();
 
+export const SharedContext = createContext();
 
 const SharedContextProvider = (props) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-console.log("backend url from shared context",backendUrl)
-const [socket, setSocket] = useState(null);
+  console.log("backend url from shared context", backendUrl);
 
-useEffect(() => {
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
     const newSocket = io(backendUrl, {
       withCredentials: true,
       transports: ["websocket"],
@@ -20,16 +20,13 @@ useEffect(() => {
     return () => newSocket.close();
   }, [backendUrl]);
 
+  const value = { socket };
 
-  const value = {
-    socket
-  }
-
-   return (
-      <SharedContextProvider.Provider value={value}>{props.children}</SharedContextProvider.Provider>
-    );
-
-}
-
+  return (
+    <SharedContext.Provider value={value}>
+      {props.children}
+    </SharedContext.Provider>
+  );
+};
 
 export default SharedContextProvider;
