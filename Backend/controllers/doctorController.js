@@ -2,7 +2,8 @@ import doctorModel from "../models/doctorModel.js"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import appointmentModel from "../models/appointmentModel.js"
-
+import validator from "validator";
+import { v2 as clodinary } from "cloudinary";
 
 const changeAvaialibility = async (req,res) =>{
     try {
