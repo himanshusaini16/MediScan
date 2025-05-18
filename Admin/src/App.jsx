@@ -23,6 +23,7 @@ import DoctorDashboard from './pages/Doctor/DoctorDashboard'
 import DoctorAppointment from './pages/Doctor/DoctorAppointment'
 import DoctorProfile from './pages/Doctor/DoctorProfile'
 import DoctorChatPage from './pages/Doctor/DoctorChat'
+import RegisterDoctor from './pages/Doctor/RegisterDoctor'
 
 const App = () => {
   const { aToken } = useContext(AdminContext)
@@ -36,6 +37,7 @@ const App = () => {
       <Routes>
         {/* Public routes */}
         <Route path="/login" element={<Login />} />
+        <Route path='/register' element={<RegisterDoctor/>} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
 
         {/* Protected routes */}

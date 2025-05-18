@@ -43,6 +43,7 @@ const Login = () => {
             }   
         
         } catch (error) {
+            toast.error(error.message)
         }
     }
 
@@ -64,8 +65,9 @@ const Login = () => {
             <button className='bg-primary text-white w-full py-2 rounded-md text-base'>Login</button>
             {
                 state === 'Admin' 
-                ?<p>Doctor Login? <span  className='text-primary underline cursor-pointer' onClick={()=>setState('Doctor')}>Click Here</span><br/><p>User Login?   <a href="https://medi-scan-mrwk.vercel.app/login" className="text-primary underline cursor-pointer">Click for User Login</a></p></p>
-                :<p><span onClick={() => navigate('/forgot-password')} className="text-primary underline cursor-pointer">Forgot Password</span><br/>Admin Login? <span className='text-primary underline cursor-pointer' onClick={()=>setState('Admin')}>Click Here</span><p>User Login?   <a href="https://medi-scan-mrwk.vercel.app/login" className="text-primary underline cursor-pointer">Click Here</a></p></p>
+                ?<p>Doctor Login? <span  className='text-primary underline cursor-pointer' onClick={()=>setState('Doctor')}>Click Here</span><br/><p>User Login? <a href="https://medi-scan-mrwk.vercel.app/login" className="text-primary underline cursor-pointer">Click for User Login</a></p></p>
+                :<p><p className="text-primary underline cursor-pointer" onClick={() => navigate('/register')}>Click Here For Doctor Registration</p>
+<span onClick={() => navigate('/forgot-password')} className="text-primary underline cursor-pointer">Forgot Password</span><br/>Admin Login? <span className='text-primary underline cursor-pointer' onClick={()=>setState('Admin')}>Click Here</span><p>User Login?   <a href="https://medi-scan-mrwk.vercel.app/login" className="text-primary underline cursor-pointer">Click Here</a></p></p>
             }
         </div>
     </form>
