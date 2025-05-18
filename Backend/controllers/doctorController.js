@@ -77,6 +77,9 @@ const register = async (req, res) => {
     } = req.body;
     const imageFile = req.file;
 
+    console.log(req.body)
+    console.log(req.file)
+
     if (
       !name ||
       !email ||
