@@ -6,6 +6,7 @@ import { assets } from '../assets/assets';
 import RelatedDoctor from '../Components/RelatedDoctor';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import MapboxExample from '../Components/Map';
 
 const Appiontments = () => {
   const {docId} = useParams()
@@ -23,7 +24,7 @@ const Appiontments = () => {
     const docInfo = doctors.find(doc => doc._id === docId );
     SetDocInfo(docInfo);
   }
-
+console.log(docInfo)
   const getAvaliableSlot = async () =>{
 
     if (!docInfo || typeof docInfo !== 'object' || !docInfo.slots_booked) {
@@ -182,7 +183,15 @@ const Appiontments = () => {
 
           <button onClick={bookAppointment} className='bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6 '>Book an Appiontment</button>
       </div>
+     
+     <div className='m-2'>
+     <h2 className='text-3xl flex justify-center font-medium'>Doctor Location</h2>
+      <MapboxExample/>
+      </div>
 
+      <div className='m-2  bg-red-100 w-full h-10'>
+        <h2 className='text-2xl m-5  flex justify-center font-medium'>Give Rating And FeedBack</h2>
+      </div>
       <RelatedDoctor docId={docId} speciality={docInfo.speciality} />
 
     </div>
