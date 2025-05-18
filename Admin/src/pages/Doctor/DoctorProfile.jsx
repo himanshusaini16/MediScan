@@ -5,45 +5,63 @@ import { toast } from "react-toastify";
 import axios from "axios";
 
 const DoctorProfile = () => {
-  const { dToken, profileData, setProfileData, getProfileData,backendUrl,getAppointments  } =
-    useContext(DoctorContext);
+  const {
+    dToken,
+    profileData,
+    setProfileData,
+    getProfileData,
+    backendUrl,
+    getAppointments,
+  } = useContext(DoctorContext);
 
-  const { currency,  } = useContext(AppContext);
+  const { currency } = useContext(AppContext);
 
   const [isEdit, setIsEdit] = useState(false);
+  const [parsedAddress, setParsedAddress] = useState({ line1: "", line2: "" });
+
+  // When profileData loads, parse address string to object
+  useEffect(() => {
+    if (profileData?.address) {
+      try {
+        setParsedAddress(JSON.parse(profileData.address));
+      } catch (error) {
+        setParsedAddress({ line1: "", line2: "" });
+      }
+    }
+  }, [profileData]);
 
   useEffect(() => {
     if (dToken) {
-      getProfileData()
-      getAppointments ()
+      getProfileData();
+      getAppointments();
     }
   }, [dToken]);
 
-  const updateProfile = async () =>{
+  const updateProfile = async () => {
     try {
-      
       const updateData = {
-        address : profileData.address,
-        fees : profileData.fees,
-        available : profileData.available
-      }
+        address: JSON.stringify(parsedAddress), // stringify before sending
+        fees: profileData.fees,
+        available: profileData.available,
+      };
 
-      const {data} = await axios.post(backendUrl+'/api/doctors/update-profile',updateData,{headers:{dToken}})
-      
-      if(data.success){
-        toast.success(data.message)
-        setIsEdit(false)
-        getProfileData()
-      }
-      else{
-        toast.error(data.message)
-      }
+      const { data } = await axios.post(
+        backendUrl + "/api/doctors/update-profile",
+        updateData,
+        { headers: { dToken } }
+      );
 
+      if (data.success) {
+        toast.success(data.message);
+        setIsEdit(false);
+        getProfileData();
+      } else {
+        toast.error(data.message);
+      }
     } catch (error) {
-      toast.error(error.message)
+      toast.error(error.message);
     }
-  }
-
+  };
 
   return (
     profileData && (
@@ -76,13 +94,12 @@ const DoctorProfile = () => {
                 About
               </p>
               <p className="text-sm text-gray-600 max-w-[700px] mt-1">
-                {" "}
                 {profileData.about}
               </p>
             </div>
 
             <p className="text-gray-600 font-medium mt-4">
-              Appiontement Fee :
+              Appointment Fee :
               <span className="text-gray-800">
                 {currency}
                 {isEdit ? (
@@ -95,7 +112,7 @@ const DoctorProfile = () => {
                       }))
                     }
                     value={profileData.fees}
-                  ></input>
+                  />
                 ) : (
                   profileData.fees
                 )}
@@ -106,58 +123,72 @@ const DoctorProfile = () => {
               <p>Address:</p>
               <p className="text-sm">
                 {isEdit ? (
-                  <input
-                    type="text"
-                    onChange={(e) =>
-                      setProfileData((prev) => ({
-                        ...prev,
-                        address: { ...prev.address, line1: e.target.value },
-                      }))
-                    }
-                    value={JSON.parse(profileData.address).line1}
-                  ></input>
+                  <>
+                    <input
+                      type="text"
+                      onChange={(e) =>
+                        setParsedAddress((prev) => ({
+                          ...prev,
+                          line1: e.target.value,
+                        }))
+                      }
+                      value={parsedAddress.line1}
+                      placeholder="Line 1"
+                      className="mb-1"
+                    />
+                    <br />
+                    <input
+                      type="text"
+                      onChange={(e) =>
+                        setParsedAddress((prev) => ({
+                          ...prev,
+                          line2: e.target.value,
+                        }))
+                      }
+                      value={parsedAddress.line2}
+                      placeholder="Line 2"
+                    />
+                  </>
                 ) : (
-                  JSON.parse(profileData.address).line1
-                )}
-                <br></br>
-                {isEdit ? (
-                  <input
-                    type="text"
-                    onChange={(e) =>
-                      setProfileData((prev) => ({
-                        ...prev,
-                        address: { ...prev.address, line2: e.target.value },
-                      }))
-                    }
-                    value={JSON.parse(profileData.address).line2}
-                  ></input>
-                ) : (
-                  JSON.parse(profileData.address).line2
+                  <>
+                    {parsedAddress.line1}
+                    <br />
+                    {parsedAddress.line2}
+                  </>
                 )}
               </p>
             </div>
 
-            <div className="flex gap-1 pt-1">
-              <input onChange={() => isEdit && setProfileData(prev => ({...prev,available: ! prev.available}))} type="checkbox" checked={profileData.available}></input>
-              <label htmlFor="">Avaliale</label>
+            <div className="flex gap-1 pt-1 items-center">
+              <input
+                onChange={() =>
+                  isEdit &&
+                  setProfileData((prev) => ({
+                    ...prev,
+                    available: !prev.available,
+                  }))
+                }
+                type="checkbox"
+                checked={profileData.available}
+                id="available-checkbox"
+              />
+              <label htmlFor="available-checkbox">Available</label>
             </div>
-            {
-              isEdit ?
+            {isEdit ? (
               <button
-              onClick={() => updateProfile()}
-              className="px-4 py-1 border border-primary text-sm rounded-full mt-5 hover:bg-primary hover:text-white transition-all"
-            >
-              Save
-            </button> 
-            :
-            <button
-              onClick={() => setIsEdit(true)}
-              className="px-4 py-1 border border-primary text-sm rounded-full mt-5 hover:bg-primary hover:text-white transition-all"
-            >
-              Edit
-            </button>
-            }
-            
+                onClick={updateProfile}
+                className="px-4 py-1 border border-primary text-sm rounded-full mt-5 hover:bg-primary hover:text-white transition-all"
+              >
+                Save
+              </button>
+            ) : (
+              <button
+                onClick={() => setIsEdit(true)}
+                className="px-4 py-1 border border-primary text-sm rounded-full mt-5 hover:bg-primary hover:text-white transition-all"
+              >
+                Edit
+              </button>
+            )}
           </div>
         </div>
       </div>
