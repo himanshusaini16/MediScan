@@ -3,7 +3,6 @@ import React, { useContext, useState } from "react";
 import { assets } from "../../assets/assets";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { Navigate } from "react-router-dom";
 import { AppContext } from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
 
@@ -70,8 +69,12 @@ const RegisterDoctor = () => {
   };
 
   return (
-    <form onSubmit={onSubmitHandler} className="m-5 w-full">
-      <p className="mb-3 text-lg font-medium">Register</p>
+  <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+    <form
+      onSubmit={onSubmitHandler}
+      className="w-full max-w-4xl bg-white px-8 py-8 border rounded overflow-y-auto max-h-[90vh]"
+    >
+      <p className="mb-3 text-2xl font-semibold text-center">Register</p>
 
       <div className="bg-white px-8 py-8 border rounded w-full max-w-4xl max-h-[80vh] overflow-y-scroll  ">
         <div className="flex items-center gap-4 mb-8 text-gray-500 ">
@@ -239,6 +242,7 @@ const RegisterDoctor = () => {
         </button>
       </div>
     </form>
+    </div>
   );
 };
 
