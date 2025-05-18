@@ -107,9 +107,12 @@ const register = async (req, res) => {
         message: "Please enter a Striong password",
       });
     }
+  const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
 
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+       console.log(hashedPassword)
+
+       const dtoken = jwt.sign({id:doctor._id,},process.env.JWT_SECRET)
 
     const imageUpload = await clodinary.uploader.upload(imageFile.path, {
       resource_type: "image",
