@@ -59,6 +59,84 @@ const loginDoctor = async (req,res) =>{
     }
 }
 
+//api for register
+
+// API for adding Doctor
+const register = async (req, res) => {
+  try {
+    const {
+      name,
+      email,
+      password,
+      speciality,
+      degree,
+      experience,
+      about,
+      fees,
+      address,
+    } = req.body;
+    const imageFile = req.file;
+
+    if (
+      !name ||
+      !email ||
+      !password ||
+      !speciality ||
+      !degree ||
+      !experience ||
+      !about ||
+      !fees ||
+      !address
+    ) {
+      return res.json({ success: false, message: "Missing Detail" });
+    }
+    if (!validator.isEmail(email)) {
+      return res.json({
+        success: false,
+        message: "Please Enter a Valid Email",
+      });
+    }
+
+    if (password.length < 8) {
+      return res.json({
+        success: false,
+        message: "Please enter a Striong password",
+      });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const imageUpload = await clodinary.uploader.upload(imageFile.path, {
+      resource_type: "image",
+    });
+    const imageUrl = imageUpload.secure_url;
+    console.log(imageUrl);
+
+    const doctorData = {
+      name,
+      email,
+      image: imageUrl,
+      password: hashedPassword,
+      speciality,
+      degree,
+      experience,
+      about,
+      fees,
+      address,
+      date: Date.now(),
+    };
+
+    const newDoctor = new doctorModel(doctorData);
+    await newDoctor.save();
+
+    res.json({ success: true, message: "Registeration Successfull now you can login" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
 // api for get all appointment 
 
 const appiontementsDoctor = async(req,res) =>{
@@ -248,4 +326,4 @@ const resetPassword = async(req,res) =>{
 }
 
 
-export {changeAvaialibility,doctorList,loginDoctor,appiontementsDoctor,appointmentComplete,appointmentCancel,doctorDashboard,doctorProfile,updateDoctorProfile,ForgotPassword,resetPassword}
+export {changeAvaialibility,doctorList,loginDoctor,appiontementsDoctor,appointmentComplete,appointmentCancel,doctorDashboard,doctorProfile,updateDoctorProfile,ForgotPassword,resetPassword,register}
