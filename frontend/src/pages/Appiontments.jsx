@@ -7,6 +7,7 @@ import RelatedDoctor from '../Components/RelatedDoctor';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import MapboxExample from '../Components/Map';
+import ReviewSection from '../Components/Review';
 
 const Appiontments = () => {
   const {docId} = useParams()
@@ -189,9 +190,7 @@ console.log(docInfo)
       <MapboxExample/>
       </div>
 
-      <div className='m-2  bg-red-100 w-full h-10'>
-        <h2 className='text-2xl m-5  flex justify-center font-medium'>Give Rating And FeedBack</h2>
-      </div>
+      <ReviewSection/>
       <RelatedDoctor docId={docId} speciality={docInfo.speciality} />
 
     </div>
