@@ -8,11 +8,13 @@ const ReviewSection = () => {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [feedback, setFeedback] = useState('');
-  const { userData,backendUrl} = useContext(AppContext); 
+  const { userData,backendUrl,token} = useContext(AppContext); 
 
   {
     console.log("user Data",userData)
   }
+
+  console.log("review url",backendUrl)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,7 +24,7 @@ const ReviewSection = () => {
         userId: userData._id,
         rating,
         feedback
-      });
+      },{headers:{token}});
 
 
       

@@ -513,7 +513,7 @@ const addReview = async(req,res) =>{
     try{
         const {userId,rating,feedback} = req.body
 
-        const user = await userModel.find(userId)
+        const user = await userModel.find("review user",userId)
 
         console.log(user)
 
@@ -534,7 +534,7 @@ const addReview = async(req,res) =>{
 
     }
     catch(err){
-        res.json({ success: false, message: error.message });
+        res.json({ success: false, message: err.message });
     }
 }
 
