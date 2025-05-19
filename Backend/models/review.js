@@ -5,6 +5,8 @@ const reviewSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  docId : {type :String , required: true},
+  docData : {type : Object,required:true},
   rating: {
     type: Number,
     required: true,

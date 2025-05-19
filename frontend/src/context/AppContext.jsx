@@ -2,9 +2,6 @@ import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { io } from "socket.io-client";
-// import { useContext } from "react";
-// import { SharedContext } from "@shared/context/SharedContext";
-
 
 export const AppContext = createContext();
 
@@ -17,6 +14,7 @@ const AppContextProvider = (props) => {
   const [socket, setSocket] = useState(null);
   // const {socket} = useContext(SharedContext)
   const [appointments, setAppointments] = useState([]);
+  // const [review,setReview] = useState([])
 
 
 
@@ -48,6 +46,24 @@ const AppContextProvider = (props) => {
     }
   };
 
+
+  //  const getAllReview = async () => {
+  //   try {
+  //     const { data } = await axios.get(`${backendUrl}/api/user/all-review`);
+  //     if (data.success) {
+  //       setReview(data.review);
+        
+  //       console.log(data)
+  //     } else {
+  //       toast.error(data.message);
+  //     }
+  //   } catch (error) {
+  //     toast.error(error.message);
+  //   }
+  // };
+
+// console.log(review)
+
   const loadUserProfileData = async () => {
     try {
       const { data } = await axios.get(`${backendUrl}/api/user/get-profile`, {
@@ -65,6 +81,7 @@ const AppContextProvider = (props) => {
 
   useEffect(() => {
     getDoctorsData();
+    // getAllReview()
   }, []);
 
   useEffect(() => {
@@ -161,6 +178,7 @@ const AppContextProvider = (props) => {
     getRoomMessages,
     loadAppointments,
     appointments,
+    // getAllReview
   };
 
   return (

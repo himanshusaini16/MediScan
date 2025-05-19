@@ -509,40 +509,64 @@ const listPredictionHistorySkincancer= async (req,res) =>{
 
 // api for review
 
-const addReview = async(req,res) =>{
-    try{
-        const {userId,rating,feedback} = req.body
+const addReview = async (req, res) => {
+  try {
+    const { userId, rating, feedback, docId } = req.body;
 
-        const user = await userModel.find(userId)
+    const userData = await userModel.findById(userId);
+    const doctorData = await doctorModel.findById(docId);
 
-        console.log("review user",user)
+    // console.log(doctorData)
 
-        const reviewData={
-            username:user.name,
-            rating,
-            feedback,
-            date:Date.now()
-        }
-
-        console.log(reviewData)
-
-        const newReviewData = new Review(reviewData)
-
-        await newReviewData.save()
-
-        res.json({success:true,message:"Review Added"})
-
+    if (!userData || !doctorData) {
+      return res.status(404).json({ success: false, message: "User or Doctor not found" });
     }
-    catch(err){
-        res.json({ success: false, message: err.message });
+
+    const reviewData = {
+      username: userData.name,
+      rating,
+      feedback,
+      docId: doctorData._id,
+      docData: doctorData,
+      date: Date.now(),
+    };
+
+
+    // console.log(reviewData)
+
+    const newReview = new Review(reviewData);
+    await newReview.save();
+
+    res.json({ success: true, message: "Review Added" });
+
+  } catch (err) {
+    console.error("Error adding review:", err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+// api for get all review
+
+
+const allReview = async (req,res) =>{
+    try {
+
+        const {docId} = req.params;
+
+        console.log("docId",docId)
+
+        const review = await Review.find({docId})
+        // console.log("all review",review)
+        res.json({success:true,review})
+        
+    } catch (error) {
+        // console.log(error)
+        res.json({success:false,message:error.message}) 
     }
 }
 
 
-
-
-
-
 export { registerUser, loginUser,getProfile,updateProfile,bookAppointment,listAppointments,cancelAppointments,paymentRazorpay,verifyRazorpay,vericosePredict,ForgotPassword
-    ,resetPassword , listPredictionHistory,listPredictionHistoryDiabetes,listPredictionHistoryHeartDisease,listPredictionHistoryEyeDisease,listPredictionHistorySkincancer,addReview
+    ,resetPassword , listPredictionHistory,listPredictionHistoryDiabetes,listPredictionHistoryHeartDisease,listPredictionHistoryEyeDisease,listPredictionHistorySkincancer,addReview,
+    allReview
  };

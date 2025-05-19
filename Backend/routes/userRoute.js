@@ -1,5 +1,5 @@
 import express from 'express'
-import { addReview, bookAppointment, cancelAppointments,  ForgotPassword, getProfile, listAppointments, listPredictionHistory, listPredictionHistoryDiabetes, listPredictionHistoryEyeDisease, listPredictionHistoryHeartDisease, listPredictionHistorySkincancer, loginUser, paymentRazorpay, registerUser, resetPassword, updateProfile, vericosePredict, verifyRazorpay } from '../controllers/userController.js'
+import { addReview, allReview, bookAppointment, cancelAppointments,  ForgotPassword, getProfile, listAppointments, listPredictionHistory, listPredictionHistoryDiabetes, listPredictionHistoryEyeDisease, listPredictionHistoryHeartDisease, listPredictionHistorySkincancer, loginUser, paymentRazorpay, registerUser, resetPassword, updateProfile, vericosePredict, verifyRazorpay } from '../controllers/userController.js'
 import authUser from '../middleware/authUser.js'
 import upload from '../middleware/multer.js'
 import { diabetesPredict, eyediseasePredict, heartdiseasePredict, skincancerPredict } from '../controllers/diseaseController.js'
@@ -31,7 +31,7 @@ userRouter.get('/prediction-history/eyedisease',authUser,listPredictionHistoryEy
 userRouter.post('/predict-skincancer',authUser,upload.single('image'),skincancerPredict)
 userRouter.get('/prediction-history/skincancer',authUser,listPredictionHistorySkincancer)
 userRouter.post('/review',authUser,addReview)
-
+userRouter.get('/all-review/:docId',allReview)
 
 
 export default userRouter
