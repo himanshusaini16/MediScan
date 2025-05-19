@@ -513,9 +513,9 @@ const addReview = async(req,res) =>{
     try{
         const {userId,rating,feedback} = req.body
 
-        const user = await userModel.find("review user",userId)
+        const user = await userModel.find(userId)
 
-        console.log(user)
+        console.log("review user",user)
 
         const reviewData={
             username:user.name,
