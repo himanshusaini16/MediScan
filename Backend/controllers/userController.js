@@ -15,6 +15,7 @@ import diabetesModel from '../models/diabetesModel.js'
 import heartDiseaseModel from '../models/heartDiseaseModel.js'
 import eyediseaseModel from '../models/eyediseaseModel.js'
 import skinCancerModel from '../models/skincancer.js'
+import Review from '../models/review.js'
 
 
 
@@ -506,10 +507,42 @@ const listPredictionHistorySkincancer= async (req,res) =>{
 }
 
 
+// api for review
+
+const addReview = async(req,res) =>{
+    try{
+        const {userId,rating,feedback} = req.body
+
+        const user = await userModel.find(userId)
+
+        console.log(user)
+
+        const reviewData={
+            username:user.name,
+            rating,
+            feedback,
+            date:Date.now()
+        }
+
+        console.log(reviewData)
+
+        const newReviewData = new Review(reviewData)
+
+        await newReviewData.save()
+
+        res.json({success:true,message:"Review Added"})
+
+    }
+    catch(err){
+        res.json({ success: false, message: error.message });
+    }
+}
+
+
 
 
 
 
 export { registerUser, loginUser,getProfile,updateProfile,bookAppointment,listAppointments,cancelAppointments,paymentRazorpay,verifyRazorpay,vericosePredict,ForgotPassword
-    ,resetPassword , listPredictionHistory,listPredictionHistoryDiabetes,listPredictionHistoryHeartDisease,listPredictionHistoryEyeDisease,listPredictionHistorySkincancer
+    ,resetPassword , listPredictionHistory,listPredictionHistoryDiabetes,listPredictionHistoryHeartDisease,listPredictionHistoryEyeDisease,listPredictionHistorySkincancer,addReview
  };
