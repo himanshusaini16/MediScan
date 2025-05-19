@@ -52,17 +52,16 @@ const SpecialtyMenu = () => {
       <hr/>
       <h3 className="text-3xl font-medium">For General Disease Book Appiontment</h3>
       <div className='flex sm:justify-center gap-4 pt-5 w-full overflow-scroll'>
-        {specialityData.map((item, idx) => (
+        
           <Link
-            key={idx}
             onClick={() => scrollTo(0, 0)}
-            className='flex flex-col w-full h-full items-center text-xs cursor-pointer flex-shrink-0 hover:-translate-y-2 transition-all duration-500'
-            to={`/doctors/${item.speciality}`}
+           className="flex flex-col items-center bg-red-50 border border-spacing-y-2 border-blue-800 rounded-full p-4 text-xs cursor-pointer flex-shrink-0 hover:-translate-y-2 transition-all duration-500"
+            to={`/doctors/General Physician}`}
           >
-            <img className='w-16 sm:w-24 mb-2' src={item.image} alt={item.speciality} />
-            <p>{item.speciality}</p>
+            <img className="w-20 h-30 sm:w-24 sm:h-24 mb-2 rounded-full object-cover" src='genralPhysician.png' alt='General%20Physician' />
+            <p>General Physician</p>
           </Link>
-        ))}
+      
       </div>
     </div>
   );
