@@ -12,6 +12,25 @@ const AdminContextProvider = (props) => {
   const [doctors, setDoctors] = useState([]);
   const [appointments, setAppointments] = useState([]);
   const [dashData, setDashData] = useState(false);
+  const [medicines, setMedicines] = useState([]);
+
+  const getAllMedicine = async () => {
+    try {
+      const { data } = await axios.post(
+        backendUrl + "/api/admin/all-medicine",
+        {},
+        { headers: { aToken } }
+      );
+      if (data.success) {
+        setMedicines(data.medicines);
+        // console.log("data", data.medicines);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   const getAllDoctors = async () => {
     try {
@@ -119,6 +138,26 @@ const AdminContextProvider = (props) => {
     }
   };
 
+  const deleteMedicine = async (medicineId) => {
+    try {
+      const { data } = await axios.post(
+        backendUrl + "/api/admin/delete-medicine",
+        { medicineId },
+        { headers: { aToken } }
+      );
+
+      if (data.success) {
+        toast.success(data.message);
+
+        getAllDoctors();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   const value = {
     aToken,
     setAToken,
@@ -133,6 +172,9 @@ const AdminContextProvider = (props) => {
     dashData,
     getDashboardData,
     deleteDoctor,
+    medicines,
+    getAllMedicine,
+    deleteMedicine,
   };
 
   return (
