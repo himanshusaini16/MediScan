@@ -29,22 +29,13 @@ const Doctor = () => {
     applyFilter();
   }, [doctors, speciality]);
 
- 
-
-  
-
   useEffect(() => {
-    if(token){
-    loadUserProfileData();
-    loadAppointments();
-    setuserId(userData._id);
+    if (token) {
+      loadUserProfileData();
+      loadAppointments();
+      setuserId(userData._id);
     }
   }, [token]);
-
-
-
-
-
 
   return (
     <div>

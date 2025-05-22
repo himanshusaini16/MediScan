@@ -23,6 +23,8 @@ import HeartDisease from './Disease Form/HeartDisease'
 import EyeDisease from './Disease Form/EyeDisease'
 import SkinPrediction from './Disease Form/Skincancer'
 import Message from './pages/Message'
+import Medicine from './pages/Medicine'
+import Cart from './pages/Cart'
 
 
 
@@ -52,6 +54,9 @@ const App = () => {
         <Route path='/skincancer-prediction' element={<SkinPrediction></SkinPrediction>}></Route>
         <Route path='/chat/:id' element={<Chat/>} />
         <Route path='/message' element={<Message/>}></Route>
+        <Route path='/medicine-store' element={<Medicine/>} />
+        <Route path='/medicine-store/:category' element={<Medicine/>} />
+        <Route path='/cart' element={<Cart/>} />
       </Routes>
       <Footer/>
     </div>

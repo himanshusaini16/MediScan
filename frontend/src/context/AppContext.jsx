@@ -8,15 +8,125 @@ export const AppContext = createContext();
 const AppContextProvider = (props) => {
   const currencySymbol = "₹";
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
   const [doctors, setDoctors] = useState([]);
   const [token, setToken] = useState(localStorage.getItem("token") || false);
   const [userData, setUserData] = useState(false);
   const [socket, setSocket] = useState(null);
-  // const {socket} = useContext(SharedContext)
   const [appointments, setAppointments] = useState([]);
-  // const [review,setReview] = useState([])
+  const [medicine, setMedicine] = useState([]);
+  const [cart, setCart] = useState([]);
 
+  const fetchAllOrders = async () => {
+    if (!token) return;
+    try {
+      const { data } = await axios.get(`${backendUrl}/api/user/all-order`, {
+        headers: { token },
+      });
+      if (data.orders) {
+        setCart(data.orders[0]?.medicines || []);
+      }
+    } catch (error) {
+      // console.error("Failed to fetch orders", error);
+    }
+  };
 
+  useEffect(() => {
+    fetchAllOrders();
+  }, [token]);
+
+  const addToCart = async (item, quantity) => {
+    if (!token) {
+      toast.error("Please log in to add items to your cart.");
+      return;
+    }
+
+    try {
+      const { data } = await axios.post(
+        `${backendUrl}/api/user/add-to-cart`,
+        {
+          medicineId: item._id,
+          quantity,
+        },
+        {
+          headers: {
+            token,
+          },
+        }
+      );
+
+      // console.log("Add to cart response:", data);
+
+      setCart((prevCart) => {
+        const existingIndex = prevCart.findIndex((i) => i._id === item._id);
+
+        if (existingIndex !== -1) {
+          const updatedCart = [...prevCart];
+          updatedCart[existingIndex] = {
+            ...updatedCart[existingIndex],
+            quantity: updatedCart[existingIndex].quantity + quantity,
+          };
+
+          const [updatedItem] = updatedCart.splice(existingIndex, 1);
+          return [updatedItem, ...updatedCart];
+        }
+
+        return [{ ...item, quantity }, ...prevCart];
+      });
+
+      toast.success(`${item.name} added to cart!`, { autoClose: 1500 });
+    } catch (error) {
+      // console.error("Add to cart error:", error);
+      toast.error(
+        "Failed to add item to cart: " +
+          (error.response?.data?.message || error.message)
+      );
+    }
+  };
+
+  // console.log("cart form app", cart);
+  const removeFromCart = async (orderId, medicineId) => {
+    // console.log("removeFromCart called with:", { orderId, medicineId });
+
+    if (!orderId) {
+      // console.error("removeFromCart error: Missing orderId");
+      return;
+    }
+
+    if (!medicineId) {
+      // console.error("removeFromCart error: Missing medicineId");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `${backendUrl}/api/user/stock-add`,
+        { orderId, medicineId },
+        {
+          headers: { token },
+        }
+      );
+
+      // console.log("Response from remove-from-order:", response.data);
+
+      setCart((prevCart) => prevCart.filter((item) => item._id !== medicineId));
+
+      toast.success("Item removed and stock updated.");
+    } catch (error) {
+      if (error.response) {
+        console.error(
+          "Error response from server:",
+          error.response.status,
+          error.response.data
+        );
+      } else if (error.request) {
+        // console.error("No response received:", error.request);
+      } else {
+        // console.error("Error setting up request:", error.message);
+      }
+      toast.error("Failed to remove item: " + error.message);
+    }
+  };
 
   const loadAppointments = async () => {
     try {
@@ -28,7 +138,6 @@ const AppContextProvider = (props) => {
         setAppointments(data.appointments);
       }
     } catch (error) {
-      console.log(error);
       toast.error(error.message);
     }
   };
@@ -46,23 +155,18 @@ const AppContextProvider = (props) => {
     }
   };
 
-
-  //  const getAllReview = async () => {
-  //   try {
-  //     const { data } = await axios.get(`${backendUrl}/api/user/all-review`);
-  //     if (data.success) {
-  //       setReview(data.review);
-        
-  //       console.log(data)
-  //     } else {
-  //       toast.error(data.message);
-  //     }
-  //   } catch (error) {
-  //     toast.error(error.message);
-  //   }
-  // };
-
-// console.log(review)
+  const getMedicine = async () => {
+    try {
+      const { data } = await axios.get(`${backendUrl}/api/user/medicine`);
+      if (data.success) {
+        setMedicine(data.medicine);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   const loadUserProfileData = async () => {
     try {
@@ -79,19 +183,7 @@ const AppContextProvider = (props) => {
     }
   };
 
-  useEffect(() => {
-    getDoctorsData();
-    // getAllReview()
-  }, []);
-
-  useEffect(() => {
-    if (token) {
-      loadUserProfileData();
-    } else {
-      setUserData(false);
-    }
-  }, [token]);
-
+  // Socket.IO connection
   useEffect(() => {
     const newSocket = io(backendUrl, {
       withCredentials: true,
@@ -104,11 +196,15 @@ const AppContextProvider = (props) => {
 
   useEffect(() => {
     getDoctorsData();
+    getMedicine();
   }, []);
 
   useEffect(() => {
-    if (token) loadUserProfileData();
-    else setUserData(false);
+    if (token) {
+      loadUserProfileData();
+    } else {
+      setUserData(false);
+    }
   }, [token]);
 
   const sendMessage = async (room, message, senderRole = "user") => {
@@ -178,7 +274,12 @@ const AppContextProvider = (props) => {
     getRoomMessages,
     loadAppointments,
     appointments,
-    // getAllReview
+    medicine,
+    getMedicine,
+    cart,
+    addToCart,
+    removeFromCart,
+    setCart,
   };
 
   return (

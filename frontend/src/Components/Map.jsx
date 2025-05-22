@@ -1,12 +1,11 @@
-import React, { useEffect, useRef, useState, useContext } from 'react';
-import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import { AppContext } from '../context/AppContext';
+import React, { useEffect, useRef, useState, useContext } from "react";
+import mapboxgl from "mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import { AppContext } from "../context/AppContext";
 
-// Set your Mapbox access token here
-mapboxgl.accessToken = 'pk.eyJ1IjoiaGltYW5zaHVzYWluaTE2IiwiYSI6ImNtMHBrazRkYzAyOXgyanNjcmhodGZjMDMifQ.yozYpvFfjx_oy0sVm_p_HQ';
+mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
 const MapboxExample = () => {
   const mapContainerRef = useRef(null);
@@ -18,21 +17,20 @@ const MapboxExample = () => {
   const { doctors } = useContext(AppContext);
   const { docId } = useParams();
 
-  // ✅ Fetch doctor info from context
   useEffect(() => {
     const info = doctors.find((doc) => doc._id === docId);
     setDocInfo(info || null);
   }, [doctors, docId]);
 
-  // ✅ Fetch coordinates once doctor info is available
   useEffect(() => {
     const fetchLocation = async () => {
       if (!docInfo?.address) return;
 
       try {
-        const parsedAddress = typeof docInfo.address === 'string'
-          ? JSON.parse(docInfo.address)
-          : docInfo.address;
+        const parsedAddress =
+          typeof docInfo.address === "string"
+            ? JSON.parse(docInfo.address)
+            : docInfo.address;
 
         const fullAddress = `${parsedAddress.line1}, ${parsedAddress.line2}`;
         const geoRes = await axios.get(
@@ -44,29 +42,27 @@ const MapboxExample = () => {
         const [lng, lat] = geoRes.data.features[0].center;
         setDoctorLocation({ lat, lng });
       } catch (err) {
-        console.error('Failed to fetch doctor location:', err);
+        console.error("Failed to fetch doctor location:", err);
       }
     };
 
     fetchLocation();
   }, [docInfo]);
 
-  // ✅ Render Map
   useEffect(() => {
     if (!doctorLocation) return;
 
     mapRef.current = new mapboxgl.Map({
       container: mapContainerRef.current,
-      style: 'mapbox://styles/mapbox/streets-v11',
+      style: "mapbox://styles/mapbox/streets-v11",
       center: [doctorLocation.lng, doctorLocation.lat],
       zoom: 12,
     });
 
-    new mapboxgl.Marker({ color: 'red' })
+    new mapboxgl.Marker({ color: "red" })
       .setLngLat([doctorLocation.lng, doctorLocation.lat])
       .addTo(mapRef.current);
 
-    // Cleanup on unmount
     return () => mapRef.current?.remove();
   }, [doctorLocation]);
 
@@ -74,10 +70,10 @@ const MapboxExample = () => {
     <div
       ref={mapContainerRef}
       style={{
-        height: '400px',
-        width: '100%',
-        borderRadius: '10px',
-        marginTop: '20px',
+        height: "400px",
+        width: "100%",
+        borderRadius: "10px",
+        marginTop: "20px",
       }}
       className="map-container shadow-lg border border-blue-600 "
     />
