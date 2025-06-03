@@ -17,12 +17,14 @@ const SkinPrediction = () => {
   const [isLocation, SetIsLocation] = useState(null);
   const [confidence, setConfidence] = useState("");
   const [skincancer, setSkincancer] = useState("");
+  const [previewImage ,setPreviewImage] = useState(null)
 
   const navigate = useNavigate();
 
   const handleFileChange = (e) => {
     e.preventDefault();
     setSelectedFile(e.target.files[0]);
+    setPreviewImage(URL.createObjectURL(e.target.files[0]))
   };
 
   const predict = async () => {
@@ -153,6 +155,7 @@ const SkinPrediction = () => {
             onChange={handleFileChange}
             className="block w-full border border-gray-300 rounded-lg p-2 mb-5"
           />
+          {previewImage && <img src={previewImage} className="w-full h-64" alt="image"></img>}
         </div>
 
         <button

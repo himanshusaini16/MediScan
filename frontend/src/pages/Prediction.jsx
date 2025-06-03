@@ -15,12 +15,14 @@ const Prediction = () => {
   const { doctors } = useContext(AppContext);
   const [Doc, setDoc] = useState([]);
   const [isLocation, SetIsLocation] = useState(null);
+  const [previewImage,setPreviewImage] = useState(null)
 
   const navigate = useNavigate();
 
   const handleFileChange = (e) => {
     e.preventDefault();
     setSelectedFile(e.target.files[0]);
+    setPreviewImage(URL.createObjectURL(e.target.files[0]));
   };
 
   const predict = async () => {
@@ -165,6 +167,10 @@ const Prediction = () => {
             onChange={handleFileChange}
             className="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-5"
           />
+          {
+              previewImage && <img src={previewImage} className="w-full h-64" alt="image"></img>
+          }
+           
         </div>
 
         <button
