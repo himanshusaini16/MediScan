@@ -43,7 +43,7 @@ app.use(express.json())
 app.use(cors())
 
 app.use('/Vericose/tfjs_model',express.static(path.join(__dirname,"Vericose","tfjs_model")))
-const Vericose_model_url = "https://mediscan-6ikc.onrender.com/Vericose/tfjs_model/model.json";
+const Vericose_model_url = "https://mediscan-z1r7.onrender.com/Vericose/tfjs_model/model.json";
 
 let vericoseModel = null;
 async function VeriCose_Model_load() {
@@ -56,17 +56,17 @@ async function VeriCose_Model_load() {
 VeriCose_Model_load()
 
 app.use('/Disease/Diabetes/tfjs_model',express.static(path.join(__dirname,"Disease","Diabetes","tfjs_model")))
-const Diabetes_model_url = "https://mediscan-6ikc.onrender.com/Disease/Diabetes/tfjs_model/model.json";
+const Diabetes_model_url = "https://mediscan-z1r7.onrender.com/Disease/Diabetes/tfjs_model/model.json";
 
 app.use('/Disease/heartdisease/tfjs_model',express.static(path.join(__dirname,"Disease","heartdisease","tfjs_model")))
-const heartdisease_model_url = "https://mediscan-6ikc.onrender.com/Disease/heartdisease/tfjs_model/model.json";
+const heartdisease_model_url = "https://mediscan-z1r7.onrender.com/Disease/heartdisease/tfjs_model/model.json";
 
 app.use('/Disease/EyeDisease/tfjs_model',express.static(path.join(__dirname,"Disease","EyeDisease","tfjs_model")))
-const eyedisease_model_url = "https://mediscan-6ikc.onrender.com/Disease/EyeDisease/tfjs_model/model.json";
+const eyedisease_model_url = "https://mediscan-z1r7.onrender.com/Disease/EyeDisease/tfjs_model/model.json";
 
 
 app.use('/Disease/SkinCancer/tfjs_model',express.static(path.join(__dirname,"Disease","SkinCancer","tfjs_model")))
-const skincancer_model_url = "https://mediscan-6ikc.onrender.com/Disease/SkinCancer/tfjs_model/model.json";
+const skincancer_model_url = "https://mediscan-z1r7.onrender.com/Disease/SkinCancer/tfjs_model/model.json";
 
 console.log(path.join(__dirname, "Disease", "EyeDisease", "tfjs_model"));
 console.log(path.join(__dirname, "Disease", "heartdisease", "tfjs_model"));
